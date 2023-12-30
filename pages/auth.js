@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState} from 'react';
 import Layout from '@/component/layout/layout';
-import API from '@/helpers/api_builder';
+import API from '@/helpers/ApiBuilder';
 import { Card, CardContent, Typography } from '@mui/material';
 
 export default function Auth() {
   const [userData, setUserData] = useState(null);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -15,6 +14,7 @@ export default function Auth() {
         
         const loginResponse = await API.post('login', { email: 'user@user.com', password: "user" });
         const accessToken = loginResponse?.access;
+        document.cookie = `accessToken=${accessToken};`;
         
         const getUsersResponse = await API.get('get_users', accessToken);
         setUserData(getUsersResponse);
