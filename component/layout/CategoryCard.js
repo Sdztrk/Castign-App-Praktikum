@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import Tooltip from '@mui/material/Tooltip';
+import React, { useState } from 'react'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
+import CardMedia from '@mui/material/CardMedia'
+import Typography from '@mui/material/Typography'
+import Tooltip from '@mui/material/Tooltip'
 
 const CategoryCard = ({ image, title}) => {
   const [hovered, setHovered] = useState(false)
@@ -14,10 +14,6 @@ const CategoryCard = ({ image, title}) => {
 
   const handleLeave = () => {
     setHovered(false)
-  };
-
-  const handleMenuOpen = (event) => {
-    setMenuAnchor(event.currentTarget)
   };
 
 
@@ -50,7 +46,7 @@ const CategoryCard = ({ image, title}) => {
   };
 
   return (
-    <div>
+    <box>
       <Tooltip title={getTooltipContent()} arrow>
         <Card
           style={{
@@ -63,9 +59,8 @@ const CategoryCard = ({ image, title}) => {
           }}
           onMouseEnter={handleHover}
           onMouseLeave={handleLeave}
-          onClick={handleMenuOpen}
         >
-             <div style={calculateOverlayStyle()}></div>
+             <box style={calculateOverlayStyle()}></box>
           <CardMedia
             component="img"
             height="140"
@@ -79,13 +74,13 @@ const CategoryCard = ({ image, title}) => {
             }}
           />
           <CardContent style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center', color: 'white', fontFamily: '', fontSize: 'Your-Font-Size' }}>
-            <Typography gutterBottom variant="h5" component="div">
+            <Typography gutterBottom variant="h5" component="box">
               {title}
             </Typography>
           </CardContent>
         </Card>
       </Tooltip>
-    </div>
+    </box>
   );
 };
 
@@ -95,14 +90,14 @@ const Categories = () => {
     { image: "İmages/sanatçı.jpeg", title: "SANATÇILAR" },
     { image: "İmages/ajans.jpeg", title: "AJANSLAR" },
     { image: "İmages/firma.png", title: "FİRMALAR" },
-  ];
+  ]
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-around', margin: '50px' }}>
+    <box style={{ display: 'flex', justifyContent: 'space-around', margin: '50px', flexWrap: 'wrap' }}>
       {categories.map((category, index) => (
         <CategoryCard key={index} {...category} />
       ))}
-    </div>
+    </box>
   );
 };
 

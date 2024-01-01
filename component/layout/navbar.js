@@ -47,7 +47,7 @@ function ResponsiveAppBar() {
     <AppBar position="static" sx={{backgroundColor:"#FF4F00", width:"calc(100% + 20px)", marginLeft:"-10px", marginTop:"-10px"}} variant="dense">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <MovieOutlinedIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1,paddingLeft: 0 }} />
+        <img  src='/Logo1.png' style={{ width: '50px', height: '50px', display: 'block',marginRight:'1px' }}/> 
           <Typography
             variant="h6"
             noWrap

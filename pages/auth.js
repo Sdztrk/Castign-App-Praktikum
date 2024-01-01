@@ -4,7 +4,7 @@ import Layout from '@/component/layout/layout'
 export default function auth() {
   return (
     <Layout>
-      auth page
+   
     </Layout>
   )
 }
