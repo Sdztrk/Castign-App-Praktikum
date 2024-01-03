@@ -28,7 +28,7 @@ const SimpleCarousel = () => {
             <img
               src={image}
               alt={`Slide ${index + 1}`}
-              style={{ width: '100%', height: '500px', marginTop: '10px', objectFit: 'cover' }}
+              style={{ width: '100%', height: '500px', marginTop: '85px', objectFit: 'cover' }}
             />
           </div>
         ))}

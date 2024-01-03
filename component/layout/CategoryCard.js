@@ -4,18 +4,23 @@ import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import Typography from '@mui/material/Typography'
 import Tooltip from '@mui/material/Tooltip'
+import { useRouter } from 'next/router'
 
 const CategoryCard = ({ image, title}) => {
   const [hovered, setHovered] = useState(false)
+  const router = useRouter()
+
 
   const handleHover = () => {
     setHovered(true)
-  };
+  }
 
   const handleLeave = () => {
     setHovered(false)
-  };
-
+  }
+  const redirectToAuth = () => {
+    router.push("/Teams")
+  }
 
   const calculateOverlayStyle = () => {
     return {
@@ -30,6 +35,9 @@ const CategoryCard = ({ image, title}) => {
     }
   }
 
+  const handleClick = () => {
+    redirectToAuth()
+  }
   const getTooltipContent = () => {
     switch (title) {
       case 'EKİPLER':
@@ -59,6 +67,7 @@ const CategoryCard = ({ image, title}) => {
           }}
           onMouseEnter={handleHover}
           onMouseLeave={handleLeave}
+          onClick={handleClick} 
         >
              <box style={calculateOverlayStyle()}></box>
           <CardMedia
