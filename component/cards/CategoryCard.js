@@ -41,6 +41,7 @@ const CategoryCard = ({ cardImage, cardTitle, urlPath, tooltipText }) => {
             overflow: 'hidden',
             margin: '10px',
             transition: 'transform 0.3s',
+            cursor: 'pointer'          
           }}
           onMouseEnter={handleHover}
           onMouseLeave={handleLeave}
