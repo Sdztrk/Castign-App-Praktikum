@@ -1,11 +1,10 @@
 import React, { useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
-import Layout from '@/component/layout/layout'
 import styles from './Layout.module.css'
 import ProductCard from '@/component/cards/ProductCard'
 import Upside from '@/component/cards/Carousel'
 import CategoryCard from '@/component/cards/CategoryCard';
-import { MainCategories } from '@/constants/cardValues';
+import { MainCategories } from '@/constants/CardValues';
 
 export default function Dashboard() {
 
@@ -22,11 +21,9 @@ export default function Dashboard() {
     fetchData();
   }, []);
   return (
-    <Layout>
-          <Upside/>
-      <Box className={styles.cardContainer}>
-        <ProductCard/>
-      </Box>
+      <>
+      <Upside/>
+
       <Box sx={{ 
         display: 'flex', 
         flexWrap: 'wrap', 
@@ -34,7 +31,8 @@ export default function Dashboard() {
         alignItems: 'center', 
         gap: 2, 
         width: '100%', 
-        margin: 'auto'
+        margin: 'auto',
+        marginTop:10
       }}>
         {
           MainCategories.map((category, index) => (
@@ -48,7 +46,16 @@ export default function Dashboard() {
           ))
         }
       </Box>
-    </Layout>
+
+      <Box className={styles.cardContainer}>
+
+        <ProductCard />
+        <ProductCard />
+        <ProductCard />
+        <ProductCard />
+        <ProductCard />
+      </Box>
+    </>
   );
 }
 

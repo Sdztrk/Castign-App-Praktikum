@@ -16,9 +16,9 @@ import { useRouter } from 'next/navigation'
 
 
 
-const pages = ['Products', 'Pricing', 'Blog'];
+const pages = ['Products', 'Pricing', 'Blog']
 const auth = ['Login', 'Register']
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
 
 function ResponsiveAppBar() {
   const router = useRouter()
@@ -27,44 +27,37 @@ function ResponsiveAppBar() {
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
-  };
+  }
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
-  };
+  }
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  };
+  }
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
-  };
+  }
   const redirectToAuth = () => {
     router.push("/auth")
   }
 
   return (
-    <AppBar position="static" sx={{backgroundColor:"#FF4F00", width:"calc(100% + 20px)", marginLeft:"-10px", marginTop:"-10px"}} variant="dense">
+    <AppBar component="nav" sx={{ backgroundColor: "#9786BF" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-        <img  src='/Logo1.png' style={{ width: '50px', height: '50px', display: 'block',marginRight:'1px' }}/> 
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
+          <img
+            src='/Logotf.png'
+            alt='Topfıyt'
+            onClick={() => router.push("/")}
+            style={{
+              width: '75px',
+              height: '75px',
+              marginRight: '1px',
+              cursor: 'pointer' // Add this line
             }}
-          >
-            MettMedya
-          </Typography>
+          />
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -133,10 +126,10 @@ function ResponsiveAppBar() {
             ))}
           </Box>
           {auth.map((page) => (
-                <MenuItem key={page} onClick={redirectToAuth}>
-                  <Typography textAlign="center" >{page}</Typography>
-                </MenuItem>
-              ))}
+            <MenuItem key={page} onClick={redirectToAuth}>
+              <Typography textAlign="center" >{page}</Typography>
+            </MenuItem>
+          ))}
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -171,4 +164,4 @@ function ResponsiveAppBar() {
     </AppBar>
   );
 }
-export default ResponsiveAppBar;
+export default ResponsiveAppBar
