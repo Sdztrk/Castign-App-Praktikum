@@ -17,7 +17,7 @@ import { useRouter } from 'next/navigation'
 
 
 const pages = ['Products', 'Pricing', 'Blog']
-const auth = ['Login', 'Register']
+const auth = ['Giriş Yap', 'Kayıt Ol']
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
 
 function ResponsiveAppBar() {
