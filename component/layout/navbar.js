@@ -16,9 +16,8 @@ import { useRouter } from 'next/navigation'
 
 
 
-const pages = ['Products', 'Pricing', 'Blog']
-const auth = ['Giriş Yap', 'Kayıt Ol']
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
+const pages = ['Products', 'Pricing', 'Blog'];
+const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {
   const router = useRouter()
@@ -38,9 +37,13 @@ function ResponsiveAppBar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+  
+  const redirectToLogin = () => {
+    router.push("/login")
   }
-  const redirectToAuth = () => {
-    router.push("/auth")
+  const redirectToRegister = () => {
+    router.push("/register")
   }
 
   return (
@@ -125,11 +128,12 @@ function ResponsiveAppBar() {
               </Button>
             ))}
           </Box>
-          {auth.map((page) => (
-            <MenuItem key={page} onClick={redirectToAuth}>
-              <Typography textAlign="center" >{page}</Typography>
-            </MenuItem>
-          ))}
+              <MenuItem  onClick={redirectToLogin}>
+                  <Typography textAlign="center" >Giriş Yap</Typography>
+                </MenuItem>
+                <MenuItem onClick={redirectToRegister}>
+                  <Typography textAlign="center" >Kayıt Ol</Typography>
+                </MenuItem>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
