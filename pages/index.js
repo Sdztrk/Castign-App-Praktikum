@@ -1,18 +1,10 @@
 import React, { useEffect, useState} from 'react';
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import Layout from '@/component/layout/layout'
-import Cookies from "js-cookie";
-import API from '@/helpers/ApiBuilder';
-
-function srcset(image, size, rows = 1, cols = 1) {
-  return {
-    src: `${image}?w=${size * cols}&h=${size * rows}&fit=crop&auto=format`,
-    srcSet: `${image}?w=${size * cols}&h=${
-      size * rows
-    }&fit=crop&auto=format&dpr=2 2x`,
-  };
-}
+import Box from '@mui/material/Box';
+import styles from './Layout.module.css'
+import ProductCard from '@/component/cards/ProductCard'
+import Upside from '@/component/cards/Carousel'
+import CategoryCard from '@/component/cards/CategoryCard';
+import { MainCategories } from '@/constants/CardValues';
 
 export default function Dashboard() {
 
@@ -29,8 +21,42 @@ export default function Dashboard() {
     fetchData();
   }, []);
   return (
-    <Layout>
-        
-    </Layout>
+      <>
+      <Upside/>
+
+      <Box sx={{ 
+        display: 'flex', 
+        flexWrap: 'wrap', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        gap: 2, 
+        width: '100%', 
+        margin: 'auto',
+        marginTop:10
+      }}>
+        {
+          MainCategories.map((category, index) => (
+            <CategoryCard 
+              key={index} 
+              cardImage={category.cardImage} 
+              cardTitle={category.cardTitle} 
+              urlPath={category.url_path} 
+              tooltipText={category.tooltipText}
+            />
+          ))
+        }
+      </Box>
+
+      <Box className={styles.cardContainer}>
+
+        <ProductCard />
+        <ProductCard />
+        <ProductCard />
+        <ProductCard />
+        <ProductCard />
+      </Box>
+    </>
   );
 }
+
+
