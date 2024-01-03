@@ -17,11 +17,11 @@ import {
   import { useState } from "react";
   import VisibilityIcon from "@mui/icons-material/Visibility";
   import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-  import Layout from '@/component/layout/layout';
   import { useRouter } from 'next/navigation';
   import Image from 'next/image';
   import Selection from "@/component/auth/Selection"
   import {initialValuesReg, regiterSchema} from "@/component/auth/yupAndInitialValues"
+  import { mainColor } from "@/constants/Colors";
   
   const Register = () => {
     const [showPassword, setShowPassword] = useState(false);
@@ -34,15 +34,22 @@ import {
 
   
     return (
-      <Layout>
-        <Box sx={{ width: "100%", height: "100vh" }}>
+        <Box sx={{
+          width: '100%',
+          height: '100vh',
+          marginTop: 20,
+          backgroundImage: `url(${corporateImg})`,
+          backgroundSize: 'cover', // Cover the entire box
+          backgroundPosition: 'center', // Center the image
+        }}>
+          
           <Grid container p={5} alignItems="center" justifyContent="center">
             <Grid item md={6} xl={6} display={{ xs: "none", sm:"block" }} >
               {personal
                 ?
-                <Image src={personalImg} width={700} height={500} />
+                <Image src={personalImg} height={550} />
                 :
-                <Image src={corporateImg}  width={700} height={500} />
+                <Image src={corporateImg} height={550} />
               }
             </Grid>
             <Grid item xl={4} xs={12} md={6} >
@@ -51,19 +58,19 @@ import {
                   <Box sx={{ display: 'flex', width: "100%", borderRadius: "0px", paddingBottom: "0.3rem" }} >
                     <MenuItem
                       onClick={() => setPersonal(true)}
-                      sx={{ bgcolor: personal ? "#FF4F00" : "grey.100", width: "50%", display: "flex", justifyContent: "center" }}
+                      sx={{ bgcolor: personal ? mainColor : "grey.100", width: "50%", display: "flex", justifyContent: "center" }}
                     >
                       <Typography>Bireysel</Typography>
                     </MenuItem>
                     <MenuItem textAlign="center"
                       onClick={() => setPersonal(false)}
-                      sx={{ bgcolor: !personal ? "#FF4F00" : "grey.100", width: "50%", display: "flex", justifyContent: "center" }}
+                      sx={{ bgcolor: !personal ? mainColor : "grey.100", width: "50%", display: "flex", justifyContent: "center" }}
                     >
                       <Typography>Kurumsal</Typography>
                     </MenuItem>
                   </Box>
                   <Formik
-                    initialValuesReg={initialValuesReg}
+                    initialValues={initialValuesReg}
                     // onSubmit={handleSubmit}
                     validationSchema={regiterSchema}
                   >
@@ -146,7 +153,7 @@ import {
                         <Selection personal={personal}/>
                         <Stack justifyContent="center" alignItems="center" mt={2}>
                           <Button
-                            sx={{ border: 1, borderColor: "grey.500", color: "#212121", width: "50%", ':hover': { bgcolor: '#FF4F00' }, }}
+                            sx={{ border: 1, borderColor: "grey.500", color: "#212121", width: "50%", ':hover': { bgcolor: mainColor }, }}
                             type="submit"
                             size="large"
                           >
@@ -161,7 +168,7 @@ import {
                     variant="subtitle2"
                     align="center"
                     component="div"
-                    sx={{ cursor: "pointer", mt: 1, color: "goldenrod" }}
+                    sx={{ cursor: "pointer", mt: 1, color: mainColor }}
                     onClick={redirectToLogin}
                   >
                     {" "}
@@ -172,7 +179,6 @@ import {
             </Grid>
           </Grid>
         </Box>
-      </Layout>
     );
   };
   

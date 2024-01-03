@@ -12,15 +12,15 @@ import {
   IconButton,
   MenuItem
 } from "@mui/material";
-import loginImg from "@/public/auth/Authentication.png";
+import loginImg from "@/public/auth/login_image.png";
 import { Field, Form, Formik } from "formik";
 import { useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import Layout from "@/component/layout/layout";
 import { useRouter } from 'next/navigation';
 import Image from 'next/image'
 import {initialValues, validationSchema} from "@/component/auth/yupAndInitialValues"
+import { mainColor } from "@/constants/Colors";
 
 export const Login = () => {
 
@@ -35,22 +35,14 @@ export const Login = () => {
 
   return (
     <>
-      <Layout>
-        <Box sx={{ width: "100%", height: "100.5vh" }}>
+        <Box sx={{ width: "100%", height: "100.5vh", marginTop:10 }}>
           <Grid container p={5} alignItems="center" justifyContent="center">
             <Grid item md={6} xl={6} display={{ xs: "none", sm: "block" }}>
-              <Image src={loginImg} width={600} height={600} />
+              <Image src={loginImg} height={550} />
             </Grid>
             <Grid item xs={12} md={6} xl={4}>
               <Card sx={{ maxWidth: "100%", padding: "2rem" }}>
                 <CardContent>
-                <Box sx={{ display: 'flex', justifyContent: "center", width: "100%", borderRadius: "0px", paddingBottom: "0.3rem" }} >
-                    <MenuItem
-                      sx={{ bgcolor:  "#FF4F00" , width: "50%", display: "flex", justifyContent: "center" }}
-                    >
-                      <Typography>GIRIS YAP</Typography>
-                    </MenuItem>
-                  </Box>
                   <Formik
                     initialValues={initialValues}
                     //    onSubmit={handleSubmit}
@@ -102,7 +94,7 @@ export const Login = () => {
                         />
                         <Stack justifyContent="center" alignItems="center" mt={2}>
                           <Button
-                            sx={{ border: 1, borderColor: "grey.500", color: "#212121", width: "50%", ':hover': { bgcolor: '#FF4F00' }, }}
+                            sx={{ border: 1, borderColor: "grey.500", color: "#212121", width: "50%", ':hover': { bgcolor: mainColor }, }}
                             type="submit"
                             size="large"
                           >
@@ -118,7 +110,7 @@ export const Login = () => {
                     align="center"
                     component="div"
                     onClick={redirectToRegister}
-                    sx={{ cursor: "pointer", mt: 1, color: "goldenrod" }}
+                    sx={{ cursor: "pointer", mt: 1, color: mainColor }}
                   >
                     {" "}
                     Hesabiniz yok mu?
@@ -128,7 +120,6 @@ export const Login = () => {
             </Grid>
           </Grid>
         </Box>
-      </Layout>
     </>
   );
 }
