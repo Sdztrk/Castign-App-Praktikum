@@ -2,13 +2,7 @@ import React from 'react'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-
-const images = [
-  'İmages/m-1.jpg',
-  'İmages/m-2.jpg',
-  'İmages/m-3.jpg',
-  '/ferrari.png',
-]
+import { CarouselImages } from '@/constants/Carousel'
 
 const SimpleCarousel = () => {
   const settings = {
@@ -22,7 +16,7 @@ const SimpleCarousel = () => {
   return (
     <div>
       <Slider {...settings}>
-        {images.map((image, index) => (
+        {CarouselImages.map((image, index) => (
           <div key={index} >
           
             <img

@@ -17,7 +17,12 @@ import InstagramIcon from '@mui/icons-material/Instagram'
 import TwitterIcon from '@mui/icons-material/Twitter'
 
 
-const RecipeReviewCard = ({ Title="BAŞLIK", Description='DİĞER İÇERİKLER' }) => {
+const RecipeReviewCard = ({ cardTitle = "BAŞLIK", cardDescription = 'DİĞER İÇERİKLER', imageUrls = [
+  'images/m-1.jpg',
+  'images/m-2.jpg',
+  'images/m-3.jpg',
+  'images/m-4.jpg',
+] }) => {
   const [anchorEl, setAnchorEl] = useState(null)
   const [isFavorite, setIsFavorite] = useState(false)
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
@@ -51,12 +56,6 @@ const RecipeReviewCard = ({ Title="BAŞLIK", Description='DİĞER İÇERİKLER' 
     setIsHovered(false)
   }
 
-  const imageUrls = [
-    'İmages/m-1.jpg',
-    'İmages/m-2.jpg',
-    'İmages/m-3.jpg',
-    'İmages/m-4.jpg',
-  ]
 
 
   return (
@@ -77,38 +76,38 @@ const RecipeReviewCard = ({ Title="BAŞLIK", Description='DİĞER İÇERİKLER' 
           src={imageUrls[selectedImageIndex]}
           style={{ width: '400px', height: '250px', display: 'block' }}
         />
-       
-            <IconButton
-              aria-label="prev"
-              onClick={handlePrevClick}
-              sx={{
-                position: 'absolute',
-                top: '50%',
-                left: '10px',
-                transform: 'translateY(-50%)',
-                backgroundColor: 'rgba(255, 255, 255, 0.7)',
-              }}
-            >
-              <ArrowBackIcon />
-            </IconButton>
-            <IconButton
-              aria-label="next"
-              onClick={handleExpandClick}
-              sx={{
-                position: 'absolute',
-                top: '50%',
-                right: '10px',
-                transform: 'translateY(-50%)',
-                backgroundColor: 'rgba(255, 255, 255, 0.7)',
-              }}
-            >
-              <ArrowForwardIcon />
-            </IconButton>
-            {isHovered && (
+
+        <IconButton
+          aria-label="prev"
+          onClick={handlePrevClick}
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '10px',
+            transform: 'translateY(-50%)',
+            backgroundColor: 'rgba(255, 255, 255, 0.7)',
+          }}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+        <IconButton
+          aria-label="next"
+          onClick={handleExpandClick}
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            right: '10px',
+            transform: 'translateY(-50%)',
+            backgroundColor: 'rgba(255, 255, 255, 0.7)',
+          }}
+        >
+          <ArrowForwardIcon />
+        </IconButton>
+        {isHovered && (
           <>
-            <CardActions  sx={{ position: 'absolute', top: 0, right: 0 }}>
+            <CardActions sx={{ position: 'absolute', top: 0, right: 0 }}>
               <IconButton onClick={handleClick}>
-                <IosShareIcon style={{color:'white'}} />
+                <IosShareIcon style={{ color: 'white' }} />
               </IconButton>
               <Menu anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
                 <MenuItem onClick={handleClose}>
@@ -124,8 +123,8 @@ const RecipeReviewCard = ({ Title="BAŞLIK", Description='DİĞER İÇERİKLER' 
                   <TwitterIcon /> Twitter
                 </MenuItem>
               </Menu>
-              </CardActions>
-              <CardActions sx={{ position: 'absolute', bottom: 0, right: 0 }}>
+            </CardActions>
+            <CardActions sx={{ position: 'absolute', bottom: 0, right: 0 }}>
               <IconButton aria-label="add to favorites" onClick={handleButtonClick}>
                 <FavoriteIcon style={{ color: isFavorite ? 'red' : 'white' }} />
               </IconButton>
@@ -136,10 +135,10 @@ const RecipeReviewCard = ({ Title="BAŞLIK", Description='DİĞER İÇERİKLER' 
 
       <CardContent>
         <Typography variant="h5" component="div" gutterBottom>
-          {Title}
+          {cardTitle}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {Description}
+          {cardDescription}
         </Typography>
       </CardContent>
     </Card>
