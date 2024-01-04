@@ -60,7 +60,7 @@ const RecipeReviewCard = ({ cardTitle = "BAŞLIK", cardDescription = 'DİĞER İ
 
   return (
     <Card
-      sx={{ maxWidth: 300, marginLeft: 'auto', marginRight: 'auto', marginTop: 10 }}
+      sx={{ maxWidth: 300, marginLeft: 'auto', marginRight: 'auto', marginTop: 10,cursor: 'pointer'  }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
