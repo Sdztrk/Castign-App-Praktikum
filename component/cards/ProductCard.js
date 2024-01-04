@@ -18,10 +18,10 @@ import TwitterIcon from '@mui/icons-material/Twitter'
 
 
 const RecipeReviewCard = ({ cardTitle = "BAŞLIK", cardDescription = 'DİĞER İÇERİKLER', imageUrls = [
-  'images/m-1.jpg',
-  'images/m-2.jpg',
-  'images/m-3.jpg',
-  'images/m-4.jpg',
+  '/images/m-1.jpg',
+  '/images/m-2.jpg',
+  '/images/m-3.jpg',
+  '/images/m-4.jpg',
 ] }) => {
   const [anchorEl, setAnchorEl] = useState(null)
   const [isFavorite, setIsFavorite] = useState(false)

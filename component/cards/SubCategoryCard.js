@@ -15,11 +15,11 @@ const SubCategory = ({ title = "başlik", icon = <AccountBoxIcon /> }) => {
         height: 120,
         margin: 'auto',
         marginTop: 10,
-        backgroundColor: "#9786BF",
         transform: hovered ? 'scale(1.1)' : 'scale(1)',
         transition: 'transform 0.3s',
         cursor: 'pointer' ,
-        margin:10 
+        margin:10 ,
+        boxShadow: '1px 4px 8px 1px rgba(0, 0, 0, 0.5)', // Enhanced shadow
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -30,7 +30,7 @@ const SubCategory = ({ title = "başlik", icon = <AccountBoxIcon /> }) => {
         >
           {icon}
         </IconButton>
-        <Typography variant="h6" style={{ color: 'white' }}>
+        <Typography>
           {title}
         </Typography>
       </CardContent>
