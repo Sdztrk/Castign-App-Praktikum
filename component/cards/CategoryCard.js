@@ -26,7 +26,7 @@ const CategoryCard = ({ cardImage, cardTitle, urlPath, tooltipText }) => {
       width: '100%',
       height: '100%',
       backgroundColor: 'black',
-      opacity: hovered ? 0 : 0.4, 
+      opacity: hovered ? 0 : 0.6, 
       transition: 'opacity 0.3s',
     }
   }

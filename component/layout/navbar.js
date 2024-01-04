@@ -51,12 +51,12 @@ function ResponsiveAppBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <img
-            src='/Logotf.png'
+            src='/logoy.png'
             alt='Topfıyt'
             onClick={() => router.push("/")}
             style={{
-              width: '75px',
-              height: '75px',
+              width: '70px',
+              height: '70px',
               marginRight: '1px',
               cursor: 'pointer' // Add this line
             }}
