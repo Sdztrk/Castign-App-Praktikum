@@ -18,7 +18,8 @@ const SubCategory = ({ title = "başlik", icon = <AccountBoxIcon /> }) => {
         backgroundColor: "#9786BF",
         transform: hovered ? 'scale(1.1)' : 'scale(1)',
         transition: 'transform 0.3s',
-        cursor: 'pointer' 
+        cursor: 'pointer' ,
+        margin:10 
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}

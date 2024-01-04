@@ -8,10 +8,25 @@ const Teams = () => {
     {
       cardTitle: "BAŞLIK",
       cardDescription: 'DİĞER İÇERİKLER',
+   
+    },
+    {
+      cardTitle: "BAŞLIK",
+      cardDescription: 'DİĞER İÇERİKLER',
       imageUrls: [
-        'images/m-1.jpg',
-        'images/m-2.jpg',
-        'images/m-3.jpg',
+        'images/carousel/carousel_2.png',
+        'images/carousel/carousel_0.png',
+        'images/carousel/carousel_1.png',
+        'images/m-4.jpg',
+      ]
+    },
+    {
+      cardTitle: "BAŞLIK",
+      cardDescription: 'DİĞER İÇERİKLER',
+      imageUrls: [
+        'images/carousel/carousel_2.png',
+        'images/carousel/carousel_0.png',
+        'images/carousel/carousel_1.png',
         'images/m-4.jpg',
       ]
     },
@@ -68,13 +83,13 @@ const Teams = () => {
   ];
 
   return (
-    <Box style={{ display: 'flex', alignItems: 'flex-start', margin: '10px', marginTop: '85px' }}>
-      <Box style={{ alignSelf: 'flex-start', flexDirection: 'column' }}>
+    <Box style={{ flexWrap: 'wrap',display: 'flex',  margin: '10px', marginTop: '85px' }}>
+      <Box style={{ display: 'flex', flexWrap: 'wrap', margin: '20px',justifyContent: 'center' }} >
         {subCategories.map((subCategory, index) => (
           <SubCategory key={index} {...subCategory} />
         ))}
       </Box>
-      <Box style={{ display: 'flex', marginLeft: '100px', flexWrap: 'wrap'}}>
+      <Box style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap'}}>
         {productCardTeams.map((productCard, index) => (
           <Box key={index} style={{ marginRight: '30px' }}>
             <ProductCard {...productCard} />
