@@ -4,8 +4,9 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import IconButton from '@mui/material/IconButton';
+import { mainColor } from "@/constants/Colors";
 
-const SubCategory = ({ subCategoryTitle = "Title", icon = <AccountBoxIcon />, setCardTitle }) => {
+const SubCategory = ({ subCategoryTitle = "Title", icon = <AccountBoxIcon />, onClick, isActive }) => {
   const [hovered, setHovered] = React.useState(false);
 
   return (
@@ -19,11 +20,12 @@ const SubCategory = ({ subCategoryTitle = "Title", icon = <AccountBoxIcon />, se
         transition: 'transform 0.3s',
         cursor: 'pointer',
         margin: 10,
-        boxShadow: '1px 4px 8px 1px rgba(0, 0, 0, 0.5)', // Enhanced shadow
+        boxShadow: '1px 4px 8px 1px rgba(0, 0, 0, 0.5)', 
+        backgroundColor: isActive ? mainColor : 'white', 
       }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      onClick={() => setCardTitle(subCategoryTitle)}
+      onClick={() => onClick(subCategoryTitle)}
     >
       <CardContent style={{ textAlign: 'center' }}>
         <IconButton
