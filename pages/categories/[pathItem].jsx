@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box, Typography } from '@mui/material'
 import { useRouter } from 'next/router'
 import SubCategory from '@/component/cards/SubCategoryCard'
@@ -11,6 +11,11 @@ const Teams = () => {
   const category = CategoriesJSON[subCategoryPathItem];
   const [activeSubCategory, setActiveSubCategory] = useState("")
 
+  useEffect(() => {
+    if (category && category.SubCategories.length > 0) {
+      setActiveSubCategory(category.SubCategories[0].subCategoryTitle);
+    }
+  }, [category]);
 
   const handleSubCategoryClick = (title) => {
     setActiveSubCategory((prevTitle) => (prevTitle === title ? "" : title))
@@ -23,7 +28,12 @@ const Teams = () => {
 
   return (
     <Box>
-      <Typography variant="h1" gutterBottom sx={{ marginTop: '85px' }}>
+      <Typography   style={{
+          marginTop: '95px',
+          textAlign: 'center',
+          fontSize: '4.5rem',
+          fontFamily:'Varela Round'
+        }}sx={{ marginTop: '85px' }}> 
         {category.CategoryTitle}
       </Typography>
       <Box sx={{ flexWrap: 'wrap', display: 'flex', m: '10px', justifyContent: 'center', alignItems: 'center', mt: '25px' }}>
