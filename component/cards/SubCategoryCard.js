@@ -12,8 +12,8 @@ const SubCategory = ({ subCategoryTitle = "Title", icon = <AccountBoxIcon />, on
   return (
     <Card
       style={{
-        width: 120,
-        height: 120,
+        width: 130,
+        height: 130,
         margin: 'auto',
         marginTop: 10,
         transform: hovered ? 'scale(1.1)' : 'scale(1)',
