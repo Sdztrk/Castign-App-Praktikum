@@ -128,15 +128,15 @@ export const CategoriesJSON = {
 
         ]
     },
-    jobpostings : {
+    jobPostings : {
         CategoryTitle : "İŞ İLANLARI",
         SubCategories:[
-            { subCategoryTitle: "Personel Ara", icon: <WcTwoToneIcon />, urlPath:"/job-postings/search-for-staff" },
-            { subCategoryTitle: "İş Ara", icon: <MovieIcon />, urlPath:"/job-postings/look-for-a-job" },
-            { subCategoryTitle: "Mekan Kiralama", icon: <LocationCityTwoToneIcon />, urlPath:"/job-postings/venue-rental" },
-            { subCategoryTitle: "Mekan Kiraya Ver", icon: <LocationCityTwoToneIcon />, urlPath:"/job-postings/rent-a-venue" },
-            { subCategoryTitle: "Araç Kiralama", icon: <DirectionsCarTwoToneIcon />, urlPath:"/job-postings/rent-a-car" },
-            { subCategoryTitle: "Araç Kiraya Ver", icon: <DirectionsCarTwoToneIcon />, urlPath:"/job-postings/rent-a-car" },
+            { subCategoryTitle: "Personel Ara", icon: <WcTwoToneIcon />, urlPath:"/jobPostings/search-for-staff" },
+            { subCategoryTitle: "İş Ara", icon: <MovieIcon />, urlPath:"/jobPostings/look-for-a-job" },
+            { subCategoryTitle: "Mekan Kiralama", icon: <LocationCityTwoToneIcon />, urlPath:"/jobPostings/venue-rental" },
+            { subCategoryTitle: "Mekan Kiraya Ver", icon: <LocationCityTwoToneIcon />, urlPath:"/jobPostings/rent-a-venue" },
+            { subCategoryTitle: "Araç Kiralama", icon: <DirectionsCarTwoToneIcon />, urlPath:"/jobPostings/rent-a-car" },
+            { subCategoryTitle: "Araç Kiraya Ver", icon: <DirectionsCarTwoToneIcon />, urlPath:"/jobPostings/rent-a-car" },
         ]
     },
 
