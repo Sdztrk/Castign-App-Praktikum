@@ -55,8 +55,8 @@ function ResponsiveAppBar() {
             alt='Topfıyt'
             onClick={() => router.push("/")}
             style={{
-              width: '70px',
-              height: '70px',
+              width: '40px',
+              height: '50px',
               marginRight: '1px',
               cursor: 'pointer' // Add this line
             }}

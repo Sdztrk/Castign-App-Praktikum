@@ -47,23 +47,23 @@ export const CategoriesJSON = {
     teams : {
         CategoryTitle : "EKİPLER",
         SubCategories:[
-            { subCategoryTitle: "Yönetmen", icon: <MovieIcon />, urlPath:"/cards/director" },
-            { subCategoryTitle: "Senarist", icon: <DrawOutlinedIcon />, urlPath:"/cards/script-writer" },
-            { subCategoryTitle: "Görüntü yönetmeni", icon: <EmergencyRecordingOutlinedIcon />, urlPath:"/cards/director-of-photography" },
-            { subCategoryTitle: "Genel koordinatör", icon: <GroupsOutlinedIcon />, urlPath:"/cards/general_coordinator" },
-            { subCategoryTitle: "Uygulayıcı yapımcı", icon: <SettingsApplicationsOutlinedIcon />, urlPath:"/cards/practitioner-producer" },
-            { subCategoryTitle: "Sanat yönetmeni", icon: <ArtTrackOutlinedIcon />, urlPath:"/cards/art-director" },
-            { subCategoryTitle: "Kurgu yönetmeni", icon: <AutoFixHighOutlinedIcon />, urlPath:"/cards/editing-director" },
-            { subCategoryTitle: "Reji ekibi", icon: <Groups2OutlinedIcon />, urlPath:"/cards/directing-team" },
-            { subCategoryTitle: "Yapım ekibi", icon: <Groups2OutlinedIcon />, urlPath:"/cards/production-team" },
-            { subCategoryTitle: "Sanat ekibi", icon: <Groups2OutlinedIcon />, urlPath:"/cards/art-team" },
-            { subCategoryTitle: "Kostüm ekibi", icon: <Groups2OutlinedIcon />, urlPath:"/cards/costume-team" },
-            { subCategoryTitle: "Kamera ekibi", icon: <CameraEnhanceTwoToneIcon />, urlPath:"/cards/camera-team" },
-            { subCategoryTitle: "Işık ekibi", icon: <LightModeTwoToneIcon />, urlPath:"/cards/light-team" },
-            { subCategoryTitle: "Set ekibi", icon: <GroupsIcon />, urlPath:"/cards/set-team" },
-            { subCategoryTitle: "Ses ekibi", icon: <VolumeUpIcon />, urlPath:"/cards/sound-team" },
-            { subCategoryTitle: "Makyöz", icon: <Groups2OutlinedIcon />, urlPath:"/cards/make-up-artist" },
-            { subCategoryTitle: "Kuaför", icon: <Groups2OutlinedIcon />, urlPath:"/cards/hairdresser" },
+            { subCategoryTitle: "Yönetmen", icon: <MovieIcon />, urlPath:"/teams/director" },
+            { subCategoryTitle: "Senarist", icon: <DrawOutlinedIcon />, urlPath:"/teams/script-writer" },
+            { subCategoryTitle: "Görüntü yönetmeni", icon: <EmergencyRecordingOutlinedIcon />, urlPath:"/teams/director-of-photography" },
+            { subCategoryTitle: "Genel koordinatör", icon: <GroupsOutlinedIcon />, urlPath:"/teams/general_coordinator" },
+            { subCategoryTitle: "Uygulayıcı yapımcı", icon: <SettingsApplicationsOutlinedIcon />, urlPath:"/teams/practitioner-producer" },
+            { subCategoryTitle: "Sanat yönetmeni", icon: <ArtTrackOutlinedIcon />, urlPath:"/teams/art-director" },
+            { subCategoryTitle: "Kurgu yönetmeni", icon: <AutoFixHighOutlinedIcon />, urlPath:"/teams/editing-director" },
+            { subCategoryTitle: "Reji ekibi", icon: <Groups2OutlinedIcon />, urlPath:"/teams/directing-team" },
+            { subCategoryTitle: "Yapım ekibi", icon: <Groups2OutlinedIcon />, urlPath:"/teams/production-team" },
+            { subCategoryTitle: "Sanat ekibi", icon: <Groups2OutlinedIcon />, urlPath:"/teams/art-team" },
+            { subCategoryTitle: "Kostüm ekibi", icon: <Groups2OutlinedIcon />, urlPath:"/teams/costume-team" },
+            { subCategoryTitle: "Kamera ekibi", icon: <CameraEnhanceTwoToneIcon />, urlPath:"/teams/camera-team" },
+            { subCategoryTitle: "Işık ekibi", icon: <LightModeTwoToneIcon />, urlPath:"/teams/light-team" },
+            { subCategoryTitle: "Set ekibi", icon: <GroupsIcon />, urlPath:"/teams/set-team" },
+            { subCategoryTitle: "Ses ekibi", icon: <VolumeUpIcon />, urlPath:"/teams/sound-team" },
+            { subCategoryTitle: "Makyöz", icon: <Groups2OutlinedIcon />, urlPath:"/teams/make-up-artist" },
+            { subCategoryTitle: "Kuaför", icon: <Groups2OutlinedIcon />, urlPath:"/teams/hairdresser" },
         ]
     },
     artists : {
@@ -128,15 +128,15 @@ export const CategoriesJSON = {
 
         ]
     },
-    jobPostings : {
+    jobs : {
         CategoryTitle : "İŞ İLANLARI",
         SubCategories:[
-            { subCategoryTitle: "Personel Ara", icon: <WcTwoToneIcon />, urlPath:"/jobPostings/search-for-staff" },
-            { subCategoryTitle: "İş Ara", icon: <MovieIcon />, urlPath:"/jobPostings/look-for-a-job" },
-            { subCategoryTitle: "Mekan Kiralama", icon: <LocationCityTwoToneIcon />, urlPath:"/jobPostings/venue-rental" },
-            { subCategoryTitle: "Mekan Kiraya Ver", icon: <LocationCityTwoToneIcon />, urlPath:"/jobPostings/rent-a-venue" },
-            { subCategoryTitle: "Araç Kiralama", icon: <DirectionsCarTwoToneIcon />, urlPath:"/jobPostings/rent-a-car" },
-            { subCategoryTitle: "Araç Kiraya Ver", icon: <DirectionsCarTwoToneIcon />, urlPath:"/jobPostings/rent-a-car" },
+            { subCategoryTitle: "Personel Ara", icon: <WcTwoToneIcon />, urlPath:"/jobs/search-for-staff" },
+            { subCategoryTitle: "İş Ara", icon: <MovieIcon />, urlPath:"/jobs/look-for-a-job" },
+            { subCategoryTitle: "Mekan Kiralama", icon: <LocationCityTwoToneIcon />, urlPath:"/jobs/venue-rental" },
+            { subCategoryTitle: "Mekan Kiraya Ver", icon: <LocationCityTwoToneIcon />, urlPath:"/jobs/rent-a-venue" },
+            { subCategoryTitle: "Araç Kiralama", icon: <DirectionsCarTwoToneIcon />, urlPath:"/jobs/rent-a-car" },
+            { subCategoryTitle: "Araç Kiraya Ver", icon: <DirectionsCarTwoToneIcon />, urlPath:"/jobs/rent-a-car" },
         ]
     },
 
