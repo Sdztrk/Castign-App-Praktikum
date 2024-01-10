@@ -13,6 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import MovieOutlinedIcon from '@mui/icons-material/MovieOutlined';
 import { useRouter } from 'next/navigation'
+import { mainColor } from "@/constants/Colors";
 
 
 
@@ -47,7 +48,7 @@ function ResponsiveAppBar() {
   }
 
   return (
-    <AppBar component="nav" sx={{ backgroundColor: "#9786BF" }}>
+    <AppBar component="nav" sx={{ backgroundColor: mainColor }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <img
