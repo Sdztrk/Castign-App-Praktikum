@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -6,38 +6,39 @@ import { CarouselImages } from '@/constants/Carousel';
 import IconButton from '@mui/material/IconButton';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import Box from '@mui/material/Box';
 
 const SimpleCarousel = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  const settings = {
-    dots: true,
-    infinite: false, 
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    afterChange: (current) => setCurrentSlide(current),
-  };
+  
+  const sliderRef = useRef(null)
 
   const handlePrevClick = () => {
-    setCurrentSlide((prevIndex) => (prevIndex - 1 + CarouselImages.length) % CarouselImages.length);
+    sliderRef.current.slickPrev();
   };
 
   const handleNextClick = () => {
-    setCurrentSlide((prevIndex) => (prevIndex + 1) % CarouselImages.length);
+    sliderRef.current.slickNext();
+  };
+
+  const settings = {
+    dots: true,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
   };
 
   return (
-    <div style={{ position: 'relative' }}>
-      <Slider {...settings}>
+    <Box style={{ position: 'relative' }}>
+      <Slider {...settings} ref={sliderRef}>
         {CarouselImages.map((image, index) => (
-          <div key={index}>
+          <Box key={index}>
             <img
               src={image}
               alt={`Slide ${index + 1}`}
               style={{ width: '100%', height: '500px', marginTop: '85px', objectFit: 'cover' }}
             />
-          </div>
+          </Box>
         ))}
       </Slider>
 
@@ -48,7 +49,7 @@ const SimpleCarousel = () => {
       <IconButton onClick={handleNextClick} style={{ ...buttonStyle, right: 0 }} aria-label="next">
         <ArrowForwardIcon />
       </IconButton>
-    </div>
+    </Box>
   );
 };
 
@@ -57,6 +58,6 @@ const buttonStyle = {
   top: '50%',
   backgroundColor: 'rgba(255, 255, 255, 0.7)',
   transform: 'translateY(-50%)',
-}
+};
 
 export default SimpleCarousel;
