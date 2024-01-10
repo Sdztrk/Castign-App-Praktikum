@@ -1,1 +1,2 @@
-export const mainColor = "#9786BF"
+export const mainColor = "black"
+export const mainTextColor = "white"

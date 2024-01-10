@@ -4,7 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import IconButton from '@mui/material/IconButton';
-import { mainColor } from "@/constants/Colors";
+import { mainColor, mainTextColor } from "@/constants/Colors";
 
 const SubCategory = ({ subCategoryTitle = "Title", icon = <AccountBoxIcon />, onClick, isActive }) => {
   const [hovered, setHovered] = React.useState(false);
@@ -33,7 +33,7 @@ const SubCategory = ({ subCategoryTitle = "Title", icon = <AccountBoxIcon />, on
         >
           {icon}
         </IconButton>
-        <Typography>
+        <Typography style={{ color: isActive ? mainTextColor: "black" }}>
           {subCategoryTitle}
         </Typography>
       </CardContent>
