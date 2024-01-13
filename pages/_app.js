@@ -4,7 +4,7 @@ import AppContext from "../AppContext";
 import Layout from '@/component/layout/layout';
 
 function MyApp({ Component, pageProps }) {
-  const [userInfo, setUserInfo] = useState();
+  const [userInfo, setUserInfo] = useState({user:null, loggedIn:false});
   return (
     <AppContext.Provider value={{userInfo: userInfo, setUserInfo: setUserInfo}}>
       <Layout>

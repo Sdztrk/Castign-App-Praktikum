@@ -21,7 +21,6 @@ import Cookies from 'js-cookie';
 
 
 const pages = ['Products', 'Pricing', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveAppBar() {
   const { setUserInfo } = useContext(AppContext);
@@ -35,9 +34,8 @@ function ResponsiveAppBar() {
       try {
         const curentUser = await API.get('get_current_user', Cookies.get("accessToken"));
         if (curentUser?.current_user) {
-          setUserInfo(curentUser?.current_user)
           setUser(curentUser?.current_user)
-          console.log(curentUser?.current_user)
+          setUserInfo({user: curentUser?.current_user, loggedIn:true})
         }
       } catch (error) {
         console.error("Error:", error);
@@ -48,9 +46,9 @@ function ResponsiveAppBar() {
 
   const handleLogout = () => {
     Cookies.remove('accessToken'); // Clear the authentication token
-    setUser(null);
-    setUserInfo(null); // Clear user info from context
-    router.push('/login'); // Redirect to login page
+    setUser(null); // Clear user info from context
+    setUserInfo({user:null, loggedIn:false});
+    router.push('/login'); 
   };
 
   const handleOpenNavMenu = (event) => {
