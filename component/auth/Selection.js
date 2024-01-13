@@ -5,33 +5,32 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-export default function BasicSelect({ personal }) {
-  const [age, setAge] = React.useState('');
+export default function BasicSelect({ personal, setSelectedUserRole }) {
 
   const handleChange = (event) => {
-    setAge(event.target.value);
+    setSelectedUserRole(event.target.value);
   };
 
   const menuItems = personal
     ? [
-        <MenuItem key="Actor" value={"Actor"}>
+        <MenuItem key="actor" value={"Actor"}>
           Oyuncu
         </MenuItem>,
-        <MenuItem key="Artist" value={"Artist"}>
+        <MenuItem key="artist" value={"Artist"}>
           Sanatci
         </MenuItem>,
-        <MenuItem key="Director" value={"Director"}>
+        <MenuItem key="director" value={"Director"}>
           Yönetmen
         </MenuItem>,
       ]
     : [
-        <MenuItem key="Corporate" value={"Corporate"}>
+        <MenuItem key="corporate" value={"Corporate"}>
           Kurumsal 
         </MenuItem>,
-        <MenuItem key="Corporate 1" value={"Corporate 1"}>
+        <MenuItem key="corporate_1" value={"Corporate 1"}>
           Kurumsal 1
         </MenuItem>,
-        <MenuItem key="Corporate 2" value={"Corporate 2"}>
+        <MenuItem key="corporate_2" value={"Corporate 2"}>
           Kurumsal 2
         </MenuItem>,
       ];
@@ -43,8 +42,6 @@ export default function BasicSelect({ personal }) {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={age}
-          label="Age"
           onChange={handleChange}
         >
           {menuItems}
