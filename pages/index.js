@@ -7,19 +7,6 @@ import CategoryCard from '@/component/cards/CategoryCard';
 import { MainCategories } from '@/constants/CardValues';
 
 export default function Dashboard() {
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const curentUser = await API.get('get_current_user', Cookies.get("accessToken"));
-        console.log(curentUser)
-        
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
-    fetchData();
-  }, []);
   return (
       <>
       <Upside/>

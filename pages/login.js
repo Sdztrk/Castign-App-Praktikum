@@ -32,7 +32,7 @@ export const Login = () => {
       const accessToken = loginResponse?.access;
       if (accessToken) {
         document.cookie = `accessToken=${accessToken};`;
-        router.push("/"); // Redirect to home page
+        router.push('/').then(() => router.reload());
       } else {
         // If accessToken is undefined, set an error message
         setLoginError('Login failed. Please check your credentials.');
