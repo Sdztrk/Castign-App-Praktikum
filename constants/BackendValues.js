@@ -1,0 +1,1 @@
+export const BackendMediaPath = "http://localhost:8000/media/"
