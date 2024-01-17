@@ -3,16 +3,27 @@ import { Box, List, ListItem, ListItemText, Typography } from '@mui/material';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import API from '@/helpers/ApiBuilder';
-
 import AppContext from '@/AppContext';
-
+import Avatar from '@mui/material/Avatar';
+import { BackendMediaPath } from '@/constants/BackendValues'
+import Switch from '@mui/material/Switch';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import GeneralInfoContent from '@/component/auth/profile/GeneralInfoContent ';
+import AddressContent from '@/component/auth/profile/AddressContent';
+import PhysicalFeaturesContent from '@/component/auth/profile/PhysicalFeaturesContent ';
+import ContactInformation from '@/component/auth/profile/ContactInformation ';
+import SocialMediaAccounts from '@/component/auth/profile/SocialMediaAccounts ';
 function Profile() {
     const router = useRouter();
     const { userInfo } = useContext(AppContext);
+    const label = { inputProps: { 'aria-label': 'Switch demo' } };
+    const [activeTab, setActiveTab] = useState(0);
 
     // Use state to manage the artist profile
     const [artistProfile, setArtistProfile] = useState(null);
-
+    console.log(userInfo ,' userİnfo buraya geliyormuu')
+    console.log(artistProfile ,' Artist profile buraya geliyormuu')
     useEffect(() => {
         // Define an async function to fetch data
         async function fetchArtistProfile() {
@@ -44,29 +55,71 @@ function Profile() {
     if (!userInfo) {
         return <Box sx={{ marginTop: 10 }}>Loading...</Box>;
     }
+    const handleTabChange = (event, newValue) => {
+        setActiveTab(newValue);
+      };
+    
+    const AboutContent = () => (
+        <Box sx={{ margin: 'auto', maxWidth: '300px', textAlign: 'center' }}>
+          <Typography variant="h5" sx={{ fontSize: '2rem', fontFamily: 'Varela Round', textAlign: 'center' }}>
+            ABOUT
+          </Typography>
+          <Typography  sx={{ marginBottom: '10px',fontSize: '1rem' }}>
+            {artistProfile ? artistProfile.introduction : ""}
+          </Typography>
+        </Box>
+      )
+   
 
     return (
-        <Box sx={{
-            width: '100%',
-            height: '100vh',
-            marginTop: 10,
-            display: 'flex',
-            flexDirection: 'column',
-        }}>
-            {userInfo.loggedIn && (
-                <>
+        <Box sx={{ marginTop: 8 }}>
+        <Typography variant="h6" sx={{ marginTop: 10, textAlign: 'center', fontSize: '3rem', fontFamily: 'Varela Round' }} gutterBottom>
+            Your Profile
+        </Typography>
+        <Box sx={{marginLeft:'50px'}} > profilim diğer kullanıcılar tarafından görüntülensin:
+      <Switch  {...label} defaultChecked />
+      </Box>
+        <Box sx={{ marginLeft: '30px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Box sx={{ position: 'relative', display: 'inline-block' }}>
+                <Avatar
+                    src={artistProfile ? BackendMediaPath + artistProfile.photo : ''}
+                    sx={{
+                        width: 200,
+                        height: 200,
+                        border: '2px solid #fff',
+                        borderRadius: '50%',
+                    }}
+                />
+                <Box>
                     <Typography variant="h6" gutterBottom>
-                        User Information
+                        {userInfo && userInfo.user ? userInfo.user.first_name : ''}   {userInfo && userInfo.user ? userInfo.user.last_name : ''}
                     </Typography>
-                    <List>
-                        {Object.entries(userInfo.user).map(([key, value]) => (
-                            <ListItem key={key}>
-                                <ListItemText primary={`${key}:`} secondary={value} />
-                        </ListItem>
-                        ))}
-                    </List>
-                </>)}
+                    <Typography> {userInfo && userInfo.user ? userInfo.user.email : ''} </Typography>
+                </Box>
             </Box>
+            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+  <AboutContent />
+</Box>
+            <video controls style={{ width: '100%', height: 'auto', margin: 2 }}>
+            <source src={artistProfile ? BackendMediaPath + artistProfile.video : ''} type="video/mp4" />
+                    Sorry, your browser doesn't support embedded videos.
+           </video>
+        </Box>
+        <Box sx={{ marginTop: 15, textAlign: 'center' }}>
+        <Tabs value={activeTab} onChange={handleTabChange} centered>
+          <Tab label="Address" />
+          <Tab label="Physical Features" />
+          <Tab label="General Information" />
+          <Tab label="Contact information" />
+          <Tab label="Social Media Accounts" />
+        </Tabs>
+        {activeTab === 0 && <AddressContent artistProfile={artistProfile} />}
+        {activeTab === 1 && <PhysicalFeaturesContent artistProfile={artistProfile}   />}
+        {activeTab === 2 && <GeneralInfoContent artistProfile={artistProfile} />} 
+        {activeTab === 3 && <ContactInformation artistProfile={artistProfile}/>}
+        {activeTab === 4 && <SocialMediaAccounts artistProfile={artistProfile}/>}
+      </Box>
+    </Box>
         )
     }
     
