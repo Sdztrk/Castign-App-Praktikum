@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, List, ListItem, ListItemText, Typography } from '@mui/material';
+import { Box, List, ListItem, ListItemText, Typography, Drawer, Button } from '@mui/material';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import API from '@/helpers/ApiBuilder';
 import AppContext from '@/AppContext';
 import Avatar from '@mui/material/Avatar';
-import { BackendMediaPath } from '@/constants/BackendValues'
+import { BackendMediaPath } from '@/constants/BackendValues';
 import Switch from '@mui/material/Switch';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -14,11 +14,14 @@ import AddressContent from '@/component/auth/profile/AddressContent';
 import PhysicalFeaturesContent from '@/component/auth/profile/PhysicalFeaturesContent ';
 import ContactInformation from '@/component/auth/profile/ContactInformation ';
 import SocialMediaAccounts from '@/component/auth/profile/SocialMediaAccounts ';
+import EditProfileForm from '@/component/auth/profile/EditProfileForm';
 function Profile() {
     const router = useRouter();
     const { userInfo } = useContext(AppContext);
     const label = { inputProps: { 'aria-label': 'Switch demo' } };
     const [activeTab, setActiveTab] = useState(0);
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [editedProfileData, setEditedProfileData] = useState({});
 
     // Use state to manage the artist profile
     const [artistProfile, setArtistProfile] = useState(null);
@@ -58,7 +61,32 @@ function Profile() {
     const handleTabChange = (event, newValue) => {
         setActiveTab(newValue);
       };
-    
+   
+      const toggleDrawer = (open) => (event) => {
+        if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+            return;
+        }
+        setDrawerOpen(open);
+    };
+    const handleEditClick = () => {
+      setDrawerOpen(true); // Edit butonuna tıklandığında çekmeceyi aç
+      // Profil verilerini düzenlenebilir veri olarak ayarla
+      setEditedProfileData(artistProfile || {});
+  };
+  const handleSave = async (updatedProfile) => {
+    // API çağrısı ile güncellemeyi burada yapın
+    const accessToken = Cookies.get("accessToken");
+    if (accessToken) {
+      await API.put('update_artist_profile', updatedProfile, accessToken);
+      setArtistProfile(updatedProfile); // Profil durumunu güncelle
+      setDrawerOpen(false); // Çekmeceyi kapat
+    }
+  };
+  const handleCancel = () => {
+    setFormData(profile); 
+    setIsEditing(false); 
+ }
+
     const AboutContent = () => (
         <Box sx={{ margin: 'auto', maxWidth: '300px', textAlign: 'center' }}>
           <Typography variant="h5" sx={{ fontSize: '2rem', fontFamily: 'Varela Round', textAlign: 'center' }}>
@@ -79,6 +107,7 @@ function Profile() {
         <Box sx={{marginLeft:'50px'}} > profilim diğer kullanıcılar tarafından görüntülensin:
       <Switch  {...label} defaultChecked />
       </Box>
+      <Button onClick={handleEditClick}>Edit Profile</Button>
         <Box sx={{ marginLeft: '30px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Box sx={{ position: 'relative', display: 'inline-block' }}>
                 <Avatar
@@ -119,6 +148,18 @@ function Profile() {
         {activeTab === 3 && <ContactInformation artistProfile={artistProfile}/>}
         {activeTab === 4 && <SocialMediaAccounts artistProfile={artistProfile}/>}
       </Box>
+      <Drawer
+  anchor='right'
+  open={drawerOpen}
+  onClose={toggleDrawer(false)}
+>
+  <Box sx={{ width: 750 }} role="presentation">
+    <Typography variant="h6" noWrap>
+      Edit Profile
+    </Typography>
+    <EditProfileForm profile={editedProfileData} onSave={handleSave} Close={handleCancel} />
+  </Box>
+</Drawer>
     </Box>
         )
     }
