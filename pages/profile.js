@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, List, ListItem, ListItemText, Typography, Drawer, Button } from '@mui/material';
+import { Box, List, ListItem, ListItemText, Typography, Drawer, Button,IconButton,Menu,MenuItem } from '@mui/material';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
 import API from '@/helpers/ApiBuilder';
@@ -9,12 +9,15 @@ import { BackendMediaPath } from '@/constants/BackendValues';
 import Switch from '@mui/material/Switch';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import SettingsIcon from '@mui/icons-material/Settings';
 import GeneralInfoContent from '@/component/auth/profile/GeneralInfoContent ';
 import AddressContent from '@/component/auth/profile/AddressContent';
 import PhysicalFeaturesContent from '@/component/auth/profile/PhysicalFeaturesContent ';
 import ContactInformation from '@/component/auth/profile/ContactInformation ';
 import SocialMediaAccounts from '@/component/auth/profile/SocialMediaAccounts ';
 import EditProfileForm from '@/component/auth/profile/EditProfileForm';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
+import VideoCameraFrontIcon from '@mui/icons-material/VideoCameraFront';
 function Profile() {
     const router = useRouter();
     const { userInfo } = useContext(AppContext);
@@ -22,6 +25,8 @@ function Profile() {
     const [activeTab, setActiveTab] = useState(0);
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [editedProfileData, setEditedProfileData] = useState({});
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
 
     // Use state to manage the artist profile
     const [artistProfile, setArtistProfile] = useState(null);
@@ -69,23 +74,27 @@ function Profile() {
         setDrawerOpen(open);
     };
     const handleEditClick = () => {
-      setDrawerOpen(true); // Edit butonuna tıklandığında çekmeceyi aç
-      // Profil verilerini düzenlenebilir veri olarak ayarla
+      setDrawerOpen(true);
+      
       setEditedProfileData(artistProfile || {});
   };
   const handleSave = async (updatedProfile) => {
-    // API çağrısı ile güncellemeyi burada yapın
+    
     const accessToken = Cookies.get("accessToken");
     if (accessToken) {
       await API.put('update_artist_profile', updatedProfile, accessToken);
-      setArtistProfile(updatedProfile); // Profil durumunu güncelle
-      setDrawerOpen(false); // Çekmeceyi kapat
+      setArtistProfile(updatedProfile); 
+      setDrawerOpen(false);
     }
   };
-  const handleCancel = () => {
-    setFormData(profile); 
-    setIsEditing(false); 
- }
+  
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
     const AboutContent = () => (
         <Box sx={{ margin: 'auto', maxWidth: '300px', textAlign: 'center' }}>
@@ -97,6 +106,105 @@ function Profile() {
           </Typography>
         </Box>
       )
+
+      const handleCameraClick = async () => {
+        try {
+          const fileInput = document.createElement('input');
+          fileInput.type = 'file';
+          fileInput.accept = 'image/*';
+      
+          fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+      
+            if (file) {
+              const formData = new FormData();
+              formData.append('avatar', file);
+      
+              const accessToken = Cookies.get("accessToken");
+              const csrfToken = Cookies.get('csrftoken'); // CSRF token'ını cookie'den alın
+      
+              if (accessToken && csrfToken) {
+                try {
+                  const response = await API.post('post_artist_profile', formData, {
+                    headers: {
+                      'Content-Type': 'multipart/form-data',
+                      'Authorization': `Bearer ${accessToken}`,
+                      'X-CSRFToken': csrfToken, // CSRF token'ını header'lara ekleyin
+                    },
+                  });
+      
+                  if (response.data && response.data.success) {
+                    setArtistProfile(prevState => ({
+                      ...prevState,
+                      photo: response.data.photo, // Backend'in döndürdüğü yeni fotoğraf yolunu kullanın
+                    }));
+                  }
+                } catch (error) {
+                  console.error('Profil güncelleme hatası:', error);
+                  // Burada kullanıcıya bir hata mesajı gösterebilirsiniz.
+                }
+              }
+      
+              // File input'u DOM'dan kaldır
+              document.body.removeChild(fileInput);
+            }
+          });
+      
+          // File input'u DOM'a ekle ve tıkla
+          document.body.appendChild(fileInput);
+          fileInput.click();
+        } catch (error) {
+          console.error('Dosya seçme hatası:', error);
+        }
+      };
+      
+      const handleVideoClick = async () => {
+        try {
+          const fileInput = document.createElement('input');
+          fileInput.type = 'file';
+          fileInput.accept = 'video/*';
+        
+          fileInput.addEventListener('change', async (e) => {
+            const file = e.target.files[0];
+        
+            if (file) {
+              const formData = new FormData();
+              formData.append('video', file);
+        
+              const accessToken = Cookies.get("accessToken");
+              const csrfToken = Cookies.get('csrftoken'); // CSRF token'ını cookie'den alın
+        
+              if (accessToken && csrfToken) {
+                try {
+                  const response = await API.post('post_artist_video', formData, { // Video yükleme endpoint'iniz ne ise
+                    headers: {
+                      'Content-Type': 'multipart/form-data',
+                      'Authorization': `Bearer ${accessToken}`,
+                      'X-CSRFToken': csrfToken,
+                    },
+                  });
+        
+                  if (response.data && response.data.success) {
+                    setArtistProfile(prevState => ({
+                      ...prevState,
+                      video: response.data.video, // Backend'in döndürdüğü yeni video yolunu kullanın
+                    }));
+                  }
+                } catch (error) {
+                  console.error('Video yükleme hatası:', error);
+                }
+              }
+        
+              document.body.removeChild(fileInput);
+            }
+          });
+        
+          document.body.appendChild(fileInput);
+          fileInput.click();
+        } catch (error) {
+          console.error('Dosya seçme hatası:', error);
+        }
+      };
    
 
     return (
@@ -104,21 +212,61 @@ function Profile() {
         <Typography variant="h6" sx={{ marginTop: 10, textAlign: 'center', fontSize: '3rem', fontFamily: 'Varela Round' }} gutterBottom>
             Your Profile
         </Typography>
-        <Box sx={{marginLeft:'50px'}} > profilim diğer kullanıcılar tarafından görüntülensin:
-      <Switch  {...label} defaultChecked />
+        <Box sx={{ position: 'absolute', right: 40, top: 90, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Typography variant="caption" sx={{fontSize: '1rem' }}>
+          Ayarlar
+        </Typography>
+        <IconButton 
+          aria-label="ayarlar" 
+          onClick={handleClick}
+          sx={{ width: 50 }}>
+          <SettingsIcon />
+        </IconButton>
       </Box>
-      <Button onClick={handleEditClick}>Edit Profile</Button>
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleClose}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            Profil görünürlüğü: <Switch {...label} defaultChecked />
+          </Box>
+        </MenuItem>
+        <MenuItem onClick={() => { handleClose(); handleEditClick(); }}>
+         Edit profil
+        </MenuItem>
+      </Menu>
+      <Box/>
         <Box sx={{ marginLeft: '30px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Box sx={{ position: 'relative', display: 'inline-block' }}>
-                <Avatar
-                    src={artistProfile ? BackendMediaPath + artistProfile.photo : ''}
-                    sx={{
-                        width: 200,
-                        height: 200,
-                        border: '2px solid #fff',
-                        borderRadius: '50%',
-                    }}
-                />
+            <Avatar
+    src={artistProfile ? BackendMediaPath + artistProfile.photo : ''}
+    sx={{
+        width: 200,
+        height: 200,
+        border: '2px solid #fff',
+        borderRadius: '50%',
+        position: 'relative', 
+    }}
+/>
+<IconButton
+    color="primary"
+    onClick={handleCameraClick}
+    sx={{
+        position: 'absolute', 
+        bottom: 90, 
+        right: 30,  
+        border: '2px solid #3f51b5',
+        backgroundColor: 'background.paper',
+        borderRadius: '50%',
+        zIndex: 1,
+        transform: 'translate(50%, 50%)',
+    }}
+>
+    <PhotoCameraIcon />
+</IconButton>
+
                 <Box>
                     <Typography variant="h6" gutterBottom>
                         {userInfo && userInfo.user ? userInfo.user.first_name : ''}   {userInfo && userInfo.user ? userInfo.user.last_name : ''}
@@ -126,13 +274,32 @@ function Profile() {
                     <Typography> {userInfo && userInfo.user ? userInfo.user.email : ''} </Typography>
                 </Box>
             </Box>
-            <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ width: '150%', display: 'flex', justifyContent: 'center' }}>
   <AboutContent />
 </Box>
-            <video controls style={{ width: '100%', height: 'auto', margin: 2 }}>
-            <source src={artistProfile ? BackendMediaPath + artistProfile.video : ''} type="video/mp4" />
-                    Sorry, your browser doesn't support embedded videos.
-           </video>
+<Box sx={{ position: 'relative', width: '100%', height: 'auto', margin: 2 }}>
+  <video controls style={{ width: '80%', height: 'auto' }}>
+      <source src={artistProfile ? BackendMediaPath + artistProfile.video : ''} type="video/mp4" />
+      Sorry, your browser doesn't support embedded videos.
+  </video>
+  <IconButton
+      color="secondary"
+      onClick={handleVideoClick}
+      sx={{
+          position: 'absolute',
+          bottom: 0,
+          right: 20,
+          border: '2px solid #3f51b5',
+          backgroundColor: 'background.paper',
+          '&:hover': {
+            backgroundColor: 'background.paper',
+          },
+          borderRadius: '50%',
+      }}
+  >
+      <VideoCameraFrontIcon />
+  </IconButton>
+</Box>
         </Box>
         <Box sx={{ marginTop: 15, textAlign: 'center' }}>
         <Tabs value={activeTab} onChange={handleTabChange} centered>
@@ -154,10 +321,10 @@ function Profile() {
   onClose={toggleDrawer(false)}
 >
   <Box sx={{ width: 750 }} role="presentation">
-    <Typography variant="h6" noWrap>
+    <Typography sx={{textAlign:'center' }} variant="h6" noWrap>
       Edit Profile
     </Typography>
-    <EditProfileForm profile={editedProfileData} onSave={handleSave} Close={handleCancel} />
+    <EditProfileForm profile={editedProfileData} onSave={handleSave}  />
   </Box>
 </Drawer>
     </Box>
