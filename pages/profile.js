@@ -70,10 +70,10 @@ function Profile() {
     setEditedProfileData(artistProfile || {});
   };
   const handleSave = async (updatedProfile) => {
-
+    delete updatedProfile['is_active'];
     const accessToken = Cookies.get("accessToken");
     if (accessToken) {
-      await API.post('update_artist_profile', updatedProfile, accessToken);
+      await API.post('post_artist_profile', updatedProfile, accessToken);
       setArtistProfile(updatedProfile);
       setDrawerOpen(false);
     }
@@ -189,30 +189,18 @@ function Profile() {
             Your Profile
           </Typography>
           <Box sx={{ position: 'absolute', right: 40, top: 90, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <Typography variant="caption" sx={{ fontSize: '1rem' }}>
-              Ayarlar
-            </Typography>
-            <IconButton
-              aria-label="ayarlar"
-              onClick={handleClick}
-              sx={{ width: 50 }}>
-              <SettingsIcon />
-            </IconButton>
-          </Box>
-          <Menu
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-          >
-            <MenuItem onClick={handleClose}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                Profil görünürlüğü: <Switch {...label} defaultChecked />
+                <Switch {...label} defaultChecked />
               </Box>
-            </MenuItem>
-            <MenuItem onClick={() => { handleClose(); handleEditClick(); }}>
-              Edit profil
-            </MenuItem>
-          </Menu>
+              <IconButton
+                aria-label="ayarlar"
+                onClick={() => { handleClose(); handleEditClick(); }}
+                sx={{ width: 50 }}>
+                <SettingsIcon />
+              </IconButton>
+            </Box>
+          </Box>
           <Box />
           <Box sx={{ marginLeft: '30px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Box sx={{ position: 'relative', display: 'inline-block' }}>
