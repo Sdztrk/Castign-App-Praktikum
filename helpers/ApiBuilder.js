@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:8000/api/";
+import { BASE_URL } from "@/constants/BackendValues";
 
 /**
  * API class to handle HTTP requests.
