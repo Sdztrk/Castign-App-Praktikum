@@ -17,6 +17,7 @@ import SocialMediaAccounts from '@/component/auth/profile/SocialMediaAccounts ';
 import EditProfileForm from '@/component/auth/profile/EditProfileForm';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import VideoCameraFrontIcon from '@mui/icons-material/VideoCameraFront';
+import CloseIcon from '@mui/icons-material/Close';
 function Profile() {
     const router = useRouter();
     const { userInfo } = useContext(AppContext);
@@ -74,7 +75,7 @@ function Profile() {
     
     const accessToken = Cookies.get("accessToken");
     if (accessToken) {
-      await API.put('update_artist_profile', updatedProfile, accessToken);
+      await API.post('update_artist_profile', updatedProfile, accessToken);
       setArtistProfile(updatedProfile); 
       setDrawerOpen(false);
     }
@@ -325,10 +326,16 @@ function Profile() {
   onClose={toggleDrawer(false)}
 >
   <Box sx={{ width: 750 }} role="presentation">
-    <Typography sx={{textAlign:'center' }} variant="h6" noWrap>
+    <IconButton
+      onClick={() => setDrawerOpen(false)}
+      sx={{ position: 'absolute',left: 8, top: 8 }}
+    >
+      <CloseIcon />
+    </IconButton>
+    <Typography sx={{textAlign:'center', pt: 3 }} variant="h6" noWrap>
       Edit Profile
     </Typography>
-    <EditProfileForm profile={editedProfileData} onSave={handleSave}  />
+    <EditProfileForm profile={editedProfileData} onSave={handleSave} />
   </Box>
 </Drawer>
     </Box>

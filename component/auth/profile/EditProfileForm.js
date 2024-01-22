@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, TextField, Button, Typography, InputAdornment } from '@mui/material';
+import { Box, TextField, Button, Typography, InputAdornment,textarea } from '@mui/material';
 import SchoolIcon from '@mui/icons-material/School';
 import WorkIcon from '@mui/icons-material/Work';
 import WcIcon from '@mui/icons-material/Wc';
@@ -17,7 +17,6 @@ import AccessibilityIcon from '@mui/icons-material/Accessibility';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import HomeIcon from '@mui/icons-material/Home';
 import PhoneIcon from '@mui/icons-material/Phone';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter'; 
 
@@ -37,8 +36,7 @@ const EditProfileForm = ({ profile, onSave }) => {
     onSave(formData);
   };
   const handleCancel = () => {
-     setFormData(profile); 
-     setIsEditing(false); 
+     setFormData(profile);   
   }
 
   return (
@@ -365,6 +363,26 @@ const EditProfileForm = ({ profile, onSave }) => {
         }}
       />
  <Typography variant="h6" sx={{ mt: 4 }}>ABOUT</Typography>
+ <textarea
+    name="introduction"
+    value={formData.introduction || ''}
+    onChange={handleChange}
+    style={{
+      width: '100%', 
+      padding: '18.5px 14px', 
+      fontSize: '1rem', 
+      fontFamily: '"Roboto","Helvetica","Arial",sans-serif', 
+      borderRadius: 4,
+      borderColor: 'rgba(0, 0, 0, 0.23)',
+      '&:hover': {
+        borderColor: 'rgba(0, 0, 0, 0.87)', 
+      },
+      '&:focus': {
+        outline: '2px solid #3f51b5', 
+      },
+    }}
+    rows={4}
+  />
 <Box
   sx={{
     display: 'flex',
