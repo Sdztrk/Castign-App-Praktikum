@@ -11,7 +11,6 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import SettingsIcon from '@mui/icons-material/Settings';
 import GeneralInfoContent from '@/component/auth/profile/GeneralInfoContent ';
-import AddressContent from '@/component/auth/profile/AddressContent';
 import PhysicalFeaturesContent from '@/component/auth/profile/PhysicalFeaturesContent ';
 import ContactInformation from '@/component/auth/profile/ContactInformation ';
 import SocialMediaAccounts from '@/component/auth/profile/SocialMediaAccounts ';
@@ -28,12 +27,10 @@ function Profile() {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
-    // Use state to manage the artist profile
     const [artistProfile, setArtistProfile] = useState(null);
     console.log(userInfo ,' userİnfo buraya geliyormuu')
     console.log(artistProfile ,' Artist profile buraya geliyormuu')
     useEffect(() => {
-        // Define an async function to fetch data
         async function fetchArtistProfile() {
             if (userInfo.user === null) {
                 return;
@@ -50,13 +47,8 @@ function Profile() {
                 console.log(profile);
             }
         }
-
-        // Call the async function
-        fetchArtistProfile();
-
-        // Cleanup function if needed
-        return () => {
-            // Any cleanup logic goes here
+        fetchArtistProfile();  
+        return () => {     
         };
     }, [userInfo, router]);
 
@@ -106,109 +98,123 @@ function Profile() {
           </Typography>
         </Box>
       )
+    const handleCameraClick = async () => {
+    try {
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/*';
 
-      const handleCameraClick = async () => {
-        try {
-          const fileInput = document.createElement('input');
-          fileInput.type = 'file';
-          fileInput.accept = 'image/*';
-      
-          fileInput.addEventListener('change', async (e) => {
+        fileInput.onchange = async (e) => {
             const file = e.target.files[0];
-      
             if (file) {
-              const formData = new FormData();
-              formData.append('avatar', file);
-      
-              const accessToken = Cookies.get("accessToken");
-              const csrfToken = Cookies.get('csrftoken'); // CSRF token'ını cookie'den alın
-      
-              if (accessToken && csrfToken) {
+                const formData = new FormData();
+                formData.append('avatar', file);
+
+                // CSRF Token'ı kullanmanıza gerek yok, JWT ile kimlik doğrulama yapılıyor.
+                // const csrfToken = Cookies.get('csrftoken');
+                // if (csrfToken) {
+                //     formData.append('csrfmiddlewaretoken', csrfToken);
+                // }
+
+                const jwtToken = Cookies.get("accessToken"); 
                 try {
-                  const response = await API.post('post_artist_profile', formData, {
-                    headers: {
-                      'Content-Type': 'multipart/form-data',
-                      'Authorization': `Bearer ${accessToken}`,
-                      'X-CSRFToken': csrfToken, // CSRF token'ını header'lara ekleyin
-                    },
-                  });
-      
-                  if (response.data && response.data.success) {
-                    setArtistProfile(prevState => ({
-                      ...prevState,
-                      photo: response.data.photo, // Backend'in döndürdüğü yeni fotoğraf yolunu kullanın
-                    }));
-                  }
+                    const response = await fetch(`http://localhost:8000/api/post_artist_profile`, {
+                        method: 'POST',
+                        headers: jwtToken ? {
+                           'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${jwtToken}`,
+                        } : {},
+                        body: formData,
+                       
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        setArtistProfile(prevState => ({
+                            ...prevState,
+                            photo:BackendMediaPath + data.photo,
+                        }));
+                    } else {
+                        console.error('Profil fotoğrafı güncellenirken hata oluştu:', response.status);
+                    }
                 } catch (error) {
-                  console.error('Profil güncelleme hatası:', error);
-                  // Burada kullanıcıya bir hata mesajı gösterebilirsiniz.
+                    console.error('Profil fotoğrafı güncelleme hatası:', error);
                 }
-              }
-      
-              // File input'u DOM'dan kaldır
-              document.body.removeChild(fileInput);
+
+                
+                document.body.removeChild(fileInput);
             }
-          });
-      
-          // File input'u DOM'a ekle ve tıkla
-          document.body.appendChild(fileInput);
-          fileInput.click();
-        } catch (error) {
-          console.error('Dosya seçme hatası:', error);
-        }
-      };
-      
+        };
+
+       
+        document.body.appendChild(fileInput);
+        fileInput.click();
+    } catch (error) {
+        console.error('Dosya seçme hatası:', error);
+    }
+};
+
       const handleVideoClick = async () => {
         try {
           const fileInput = document.createElement('input');
           fileInput.type = 'file';
-          fileInput.accept = 'video/*';
-        
-          fileInput.addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-        
-            if (file) {
-              const formData = new FormData();
-              formData.append('video', file);
-        
-              const accessToken = Cookies.get("accessToken");
-              const csrfToken = Cookies.get('csrftoken'); // CSRF token'ını cookie'den alın
-        
-              if (accessToken && csrfToken) {
-                try {
-                  const response = await API.post('post_artist_video', formData, { // Video yükleme endpoint'iniz ne ise
-                    headers: {
-                      'Content-Type': 'multipart/form-data',
-                      'Authorization': `Bearer ${accessToken}`,
-                      'X-CSRFToken': csrfToken,
-                    },
-                  });
-        
-                  if (response.data && response.data.success) {
-                    setArtistProfile(prevState => ({
-                      ...prevState,
-                      video: response.data.video, // Backend'in döndürdüğü yeni video yolunu kullanın
-                    }));
+          fileInput.accept = 'image/*';
+  
+          fileInput.onchange = async (e) => {
+              const file = e.target.files[0];
+              if (file) {
+                  const formData = new FormData();
+                  formData.append('avatar', file);
+  
+                  // CSRF Token'ı kullanmanıza gerek yok, JWT ile kimlik doğrulama yapılıyor.
+                  // const csrfToken = Cookies.get('csrftoken');
+                  // if (csrfToken) {
+                  //     formData.append('csrfmiddlewaretoken', csrfToken);
+                  // }
+  
+                  const jwtToken = Cookies.get("accessToken"); 
+                  try {
+                      const response = await fetch(`http://localhost:8000/api/post_artist_profile`, {
+                          method: 'POST',
+                          headers: jwtToken ? {
+                             'Content-Type': 'application/json',
+                              'Authorization': `Bearer ${jwtToken}`,
+                          } : {},
+                          body: formData,
+                         
+                      });
+  
+                      if (response.ok) {
+                          const data = await response.json();
+                          setArtistProfile(prevState => ({
+                              ...prevState,
+                              photo:BackendMediaPath + data.photo,
+                          }));
+                      } else {
+                          console.error('Profil fotoğrafı güncellenirken hata oluştu:', response.status);
+                      }
+                  } catch (error) {
+                      console.error('Profil fotoğrafı güncelleme hatası:', error);
                   }
-                } catch (error) {
-                  console.error('Video yükleme hatası:', error);
-                }
+  
+                  
+                  document.body.removeChild(fileInput);
               }
-        
-              document.body.removeChild(fileInput);
-            }
-          });
-        
+          };
+  
+         
           document.body.appendChild(fileInput);
           fileInput.click();
-        } catch (error) {
+      } catch (error) {
           console.error('Dosya seçme hatası:', error);
-        }
+      }
       };
    
 
     return (
-        <Box sx={{ marginTop: 8 }}>
+      <Box p={15} >
+            {artistProfile && (
+        <Box >
         <Typography variant="h6" sx={{ marginTop: 10, textAlign: 'center', fontSize: '3rem', fontFamily: 'Varela Round' }} gutterBottom>
             Your Profile
         </Typography>
@@ -278,7 +284,7 @@ function Profile() {
   <AboutContent />
 </Box>
 <Box sx={{ position: 'relative', width: '100%', height: 'auto', margin: 2 }}>
-  <video controls style={{ width: '80%', height: 'auto' }}>
+  <video controls style={{ width: '92%', height: '200px' }}>
       <source src={artistProfile ? BackendMediaPath + artistProfile.video : ''} type="video/mp4" />
       Sorry, your browser doesn't support embedded videos.
   </video>
@@ -302,18 +308,16 @@ function Profile() {
 </Box>
         </Box>
         <Box sx={{ marginTop: 15, textAlign: 'center' }}>
-        <Tabs value={activeTab} onChange={handleTabChange} centered>
-          <Tab label="Address" />
+        <Tabs value={activeTab} onChange={handleTabChange} centered> 
           <Tab label="Physical Features" />
           <Tab label="General Information" />
           <Tab label="Contact information" />
           <Tab label="Social Media Accounts" />
         </Tabs>
-        {activeTab === 0 && <AddressContent artistProfile={artistProfile} />}
-        {activeTab === 1 && <PhysicalFeaturesContent artistProfile={artistProfile}   />}
-        {activeTab === 2 && <GeneralInfoContent artistProfile={artistProfile} />} 
-        {activeTab === 3 && <ContactInformation artistProfile={artistProfile}/>}
-        {activeTab === 4 && <SocialMediaAccounts artistProfile={artistProfile}/>}
+        {activeTab === 0 && <PhysicalFeaturesContent artistProfile={artistProfile}   />}
+        {activeTab === 1 && <GeneralInfoContent artistProfile={artistProfile} />} 
+        {activeTab === 2 && <ContactInformation artistProfile={artistProfile}/>}
+        {activeTab === 3 && <SocialMediaAccounts artistProfile={artistProfile}/>}
       </Box>
       <Drawer
   anchor='right'
@@ -328,6 +332,8 @@ function Profile() {
   </Box>
 </Drawer>
     </Box>
+        )}
+        </Box>
         )
     }
     

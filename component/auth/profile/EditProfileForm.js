@@ -46,6 +46,21 @@ const EditProfileForm = ({ profile, onSave }) => {
       <Typography variant="h6">General Information</Typography>
       <TextField
         fullWidth
+        label="Country"
+        name="citizen"
+        value={formData.citizen || ''}
+        onChange={handleChange}
+        margin="normal"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <LocationOnIcon />
+            </InputAdornment>
+          ),
+        }}
+      />
+      <TextField
+        fullWidth
         label="University"
         name="university"
         value={formData.university || ''}
@@ -303,38 +318,6 @@ const EditProfileForm = ({ profile, onSave }) => {
           ),
         }}
       />
-
-      <Typography variant="h6" sx={{ mt: 4 }}>Address</Typography>
-      <TextField
-        fullWidth
-        label="Country"
-        name="citizen"
-        value={formData.citizen || ''}
-        onChange={handleChange}
-        margin="normal"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <LocationOnIcon />
-            </InputAdornment>
-          ),
-        }}
-      />
-      <TextField
-        fullWidth
-        label="Address"
-        name="address"
-        value={formData.address || ''}
-        onChange={handleChange}
-        margin="normal"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <HomeIcon />
-            </InputAdornment>
-          ),
-        }}
-      />
        <Typography variant="h6" sx={{ mt: 4 }}>Contact information</Typography>
       <TextField
         fullWidth
@@ -381,13 +364,21 @@ const EditProfileForm = ({ profile, onSave }) => {
           ),
         }}
       />
-
-      <Button type="submit" variant="contained" sx={{ mt: 2 }}>
-        Save Changes
-      </Button>
-      <Button variant="outlined" color="error" onClick={handleCancel}>
-          Cancel
-        </Button>
+ <Typography variant="h6" sx={{ mt: 4 }}>ABOUT</Typography>
+<Box
+  sx={{
+    display: 'flex',
+    justifyContent: 'space-between', 
+    mt: 2, 
+  }}
+>
+<Button type="submit" variant="contained">
+    Save 
+  </Button>
+  <Button variant="outlined" color="error" onClick={handleCancel}>
+    Cancel
+  </Button>
+</Box>
     </Box>
   );
 };

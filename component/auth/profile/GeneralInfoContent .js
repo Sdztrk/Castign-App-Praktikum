@@ -10,9 +10,11 @@ import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import DriveEtaIcon from '@mui/icons-material/DriveEta'; 
 import PersonSearchIcon from '@mui/icons-material/PersonSearch';
 import StarBorderIcon from '@mui/icons-material/StarBorder'; 
+import LocationOnIcon from '@mui/icons-material/LocationOn'
 
 const GeneralInfoContent = ({ artistProfile }) => {
   const infoItems = [
+    { title: "Ülke", value: artistProfile?.citizen, icon: <LocationOnIcon /> },
     { title: "Üniversite", value: artistProfile?.university, icon: <SchoolIcon /> },
     { title: "Ajans", value: artistProfile?.agency, icon: <WorkIcon /> },
     { title: "Cinsiyet", value: artistProfile?.gender, icon: <WcIcon /> },
