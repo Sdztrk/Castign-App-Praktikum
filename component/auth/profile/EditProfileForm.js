@@ -41,7 +41,7 @@ const EditProfileForm = ({ profile, onSave }) => {
 
   return (
     <Box component="form" onSubmit={handleSubmit} sx={{ p: 2 }}>
-      <Typography variant="h6">General Information</Typography>
+      <Typography variant="h6">Genel Bilgiler</Typography>
       <TextField
         fullWidth
         label="Country"
@@ -208,7 +208,7 @@ const EditProfileForm = ({ profile, onSave }) => {
         }}
       />
 
-      <Typography variant="h6" sx={{ mt: 4 }}>Physical Features</Typography>
+      <Typography variant="h6" sx={{ mt: 4 }}>Fiziksel Özellikler</Typography>
       <TextField
         fullWidth
         label="Eye Color"
@@ -285,7 +285,7 @@ const EditProfileForm = ({ profile, onSave }) => {
         }}
       />
 
-      <Typography variant="h6" sx={{ mt: 4 }}>Social Media Accounts</Typography>
+      <Typography variant="h6" sx={{ mt: 4 }}>Sosyal Medya Hesapları</Typography>
       <TextField
         fullWidth
         label="Facebook Address"
@@ -316,7 +316,7 @@ const EditProfileForm = ({ profile, onSave }) => {
           ),
         }}
       />
-       <Typography variant="h6" sx={{ mt: 4 }}>Contact information</Typography>
+       <Typography variant="h6" sx={{ mt: 4 }}>İletişim Bilgiler</Typography>
       <TextField
         fullWidth
         label="Facebook Address"
@@ -362,7 +362,7 @@ const EditProfileForm = ({ profile, onSave }) => {
           ),
         }}
       />
- <Typography variant="h6" sx={{ mt: 4 }}>ABOUT</Typography>
+ <Typography variant="h6" sx={{ mt: 4 }}>Hakkımda</Typography>
  <textarea
     name="introduction"
     value={formData.introduction || ''}

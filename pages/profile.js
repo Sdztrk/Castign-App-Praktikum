@@ -23,14 +23,55 @@ import { BASE_URL } from '@/constants/BackendValues';
 function Profile() {
   const router = useRouter();
   const { userInfo } = useContext(AppContext);
-  const label = { inputProps: { 'aria-label': 'Switch demo' } };
+  const [isSwitchChecked, setIsSwitchChecked] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [editedProfileData, setEditedProfileData] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-
   const [artistProfile, setArtistProfile] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+ //"tabların mobil görünümü için kullanıldı"
+  useEffect(() => {
+    const checkIfMobile = () => window.innerWidth < 1200;
+    setIsMobile(checkIfMobile());
+
+    const handleResize = () => {
+      setIsMobile(checkIfMobile());
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+//
+
+
+useEffect(() => {
+  async function fetchArtistProfile() {
+    if (!userInfo || !userInfo.loggedIn) {
+      router.push('/login');
+      return;
+    }
+
+    const accessToken = Cookies.get("accessToken");
+    if (accessToken) {
+      try {
+        const response = await API.get('get_artist_profile', accessToken);
+        if (response && response.data) {
+          setArtistProfile(response.data);
+          setIsSwitchChecked(response.data.is_active); // Switch durumunu güncelle
+        }
+      } catch (error) {
+        console.error("Profil bilgisi yüklenirken bir hata oluştu:", error);
+      }
+    }
+  }
+
+  fetchArtistProfile();
+}, [userInfo, router]);
+
   useEffect(() => {
     async function fetchArtistProfile() {
       if (userInfo.user === null) {
@@ -90,7 +131,7 @@ function Profile() {
   const AboutContent = () => (
     <Box sx={{ margin: 'auto', maxWidth: '300px', textAlign: 'center' }}>
       <Typography variant="h5" sx={{ fontSize: '2rem', fontFamily: 'Varela Round', textAlign: 'center' }}>
-        ABOUT
+        Hakkımda
       </Typography>
       <Typography sx={{ marginBottom: '10px', fontSize: '1rem' }}>
         {artistProfile ? artistProfile.introduction : ""}
@@ -181,17 +222,52 @@ function Profile() {
     }
   };
 
+  const handleActiveChange = async (event) => {
+    const newActiveStatus = event.target.checked;
+  
+    try {
+      const updatedProfile = { ...artistProfile, is_active: newActiveStatus };
+      const accessToken = Cookies.get("accessToken");
+      if (accessToken) {
+        const response = await fetch(`${BASE_URL}update_artist_profile`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${accessToken}`,
+          },
+          body: JSON.stringify(updatedProfile),
+        });
+    
+        if (response.ok) {
+          const updatedData = await response.json(); // Backend'den gelen güncellenmiş veriyi al
+          setArtistProfile(updatedData); // Profil durumunu güncelle
+          setIsSwitchChecked(newActiveStatus); // Switch durumunu güncelle
+        } else {
+          console.error('Aktif durumu güncellenirken hata oluştu:', response.status);
+          setIsSwitchChecked(artistProfile.is_active); // Hata durumunda, switch'i eski haline getir
+        }
+      }
+    } catch (error) {
+      console.error('Aktif durumu güncelleme hatası:', error);
+      setIsSwitchChecked(artistProfile.is_active); // Hata durumunda, switch'i eski haline getir
+    }
+  };
+
   return (
-    <Box p={15} >
+    <Box p={5}  >
       {artistProfile && (
-        <Box >
-          <Typography variant="h6" sx={{ marginTop: 10, textAlign: 'center', fontSize: '3rem', fontFamily: 'Varela Round' }} gutterBottom>
-            Your Profile
+        <Box>
+          <Typography variant="h6" sx={{ marginTop: 5, textAlign: 'center', fontSize: '3rem', fontFamily: 'Varela Round' }} gutterBottom>
+            Profile
           </Typography>
           <Box sx={{ position: 'absolute', right: 40, top: 90, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Switch {...label} defaultChecked />
+              <Switch
+                      checked={isSwitchChecked}
+                      onChange={handleActiveChange}
+
+                 />
               </Box>
               <IconButton
                 aria-label="ayarlar"
@@ -201,49 +277,69 @@ function Profile() {
               </IconButton>
             </Box>
           </Box>
-          <Box />
-          <Box sx={{ marginLeft: '30px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Box sx={{ position: 'relative', display: 'inline-block' }}>
-              <Avatar
-                src={artistProfile ? BackendMediaPath + artistProfile.photo : ''}
-                sx={{
-                  width: 200,
-                  height: 200,
-                  border: '2px solid #fff',
-                  borderRadius: '50%',
-                  position: 'relative',
-                }}
-              />
-              <IconButton
-                color="primary"
-                onClick={handleCameraClick}
-                sx={{
-                  position: 'absolute',
-                  bottom: 90,
-                  right: 30,
-                  border: '2px solid #3f51b5',
-                  backgroundColor: 'background.paper',
-                  borderRadius: '50%',
-                  zIndex: 1,
-                  transform: 'translate(50%, 50%)',
-                }}
-              >
-                <PhotoCameraIcon />
-              </IconButton>
-              <Box>
+          
+          <Box sx={{ 
+            display: 'flex', 
+            flexDirection: { xs: 'column', md: 'row' }, 
+            alignItems: 'center', 
+            justifyContent: 'space-between', 
+            marginTop: 3, 
+            marginLeft:isMobile ? '' :'150px'
+          }}>
+            <Box sx={{ 
+              display: 'flex', 
+              flexDirection: 'column', 
+              alignItems: 'center', 
+              marginRight: { md: 3 } 
+            }}>
+              <Box sx={{ position: 'relative', display: 'inline-block' }}>
+                <Avatar
+                  src={artistProfile ? BackendMediaPath + artistProfile.photo : ''}
+                  sx={{
+                    width: 200,
+                    height: 200,
+                    border: '2px solid #fff',
+                    borderRadius: '50%',
+                    position: 'relative',
+                  }}
+                />
+                <IconButton
+                  color="primary"
+                  onClick={handleCameraClick}
+                  sx={{
+                    position: 'absolute',
+                    bottom: 0,
+                    right: 0,
+                    border: '2px solid #3f51b5',
+                    backgroundColor: 'background.paper',
+                    borderRadius: '50%',
+                    zIndex: 1,
+                  }}
+                >
+                  <PhotoCameraIcon />
+                </IconButton>
+              </Box>
+              <Box sx={{ textAlign: 'center', marginTop: 2 }}>
                 <Typography variant="h6" gutterBottom>
-                  {userInfo && userInfo.user ? userInfo.user.first_name : ''}   {userInfo && userInfo.user ? userInfo.user.last_name : ''}
+                  {userInfo && userInfo.user ? `${userInfo.user.first_name} ${userInfo.user.last_name}` : ''}
                 </Typography>
                 <Typography> {userInfo && userInfo.user ? userInfo.user.email : ''} </Typography>
               </Box>
             </Box>
-            <Box sx={{ width: '150%', display: 'flex', justifyContent: 'center' }}>
+            
+            <Box sx={{ width: { xs: '100%', md: '50%' }, textAlign: 'center' }}>
               <AboutContent />
             </Box>
-            <Box sx={{ position: 'relative', width: '100%', height: 'auto', margin: 2 }}>
-              <video controls key={artistProfile ? artistProfile.video : 'default-key'} style={{ width: '92%', height: '200px' }}>
+            
+            <Box sx={{ 
+              position: 'relative', 
+              width: { xs: '100%', md: '40%' }, 
+              height: 'auto', 
+              margin: 2 
+            }}>
+              <video controls key={artistProfile ? artistProfile.video : 'default-key'} style={{ width: '100%', height: '200px' }}>
                 <source src={artistProfile ? BackendMediaPath + artistProfile.video : ''} type="video/mp4" />
-                Sorry, your browser doesn't support embedded videos.
+                Your browser does not support the video tag.
               </video>
               <IconButton
                 color="secondary"
@@ -251,12 +347,9 @@ function Profile() {
                 sx={{
                   position: 'absolute',
                   bottom: 0,
-                  right: 20,
+                  right:isMobile ? '' :  -10,
                   border: '2px solid #3f51b5',
                   backgroundColor: 'background.paper',
-                  '&:hover': {
-                    backgroundColor: 'background.paper',
-                  },
                   borderRadius: '50%',
                 }}
               >
@@ -264,24 +357,34 @@ function Profile() {
               </IconButton>
             </Box>
           </Box>
+  
           <Box sx={{ marginTop: 15, textAlign: 'center' }}>
-            <Tabs value={activeTab} onChange={handleTabChange} centered>
-              <Tab label="Physical Features" />
-              <Tab label="General Information" />
-              <Tab label="Contact information" />
-              <Tab label="Social Media Accounts" />
+          <Tabs
+      value={activeTab}
+      onChange={handleTabChange}
+      centered={!isMobile} 
+      variant={isMobile ? 'scrollable' : null} 
+      scrollButtons={isMobile ? 'auto' : false}
+      allowScrollButtonsMobile={isMobile} 
+    >
+              <Tab label="Fiziksel Özellikler" />
+              <Tab label="Genel Bilgiler" />
+              <Tab label="İletişim Bilgileri" />
+              <Tab label="Sosyal Medya Hesapları" />
             </Tabs>
+            
             {activeTab === 0 && <PhysicalFeaturesContent artistProfile={artistProfile} />}
             {activeTab === 1 && <GeneralInfoContent artistProfile={artistProfile} />}
             {activeTab === 2 && <ContactInformation artistProfile={artistProfile} />}
             {activeTab === 3 && <SocialMediaAccounts artistProfile={artistProfile} />}
           </Box>
+  
           <Drawer
             anchor='right'
             open={drawerOpen}
             onClose={toggleDrawer(false)}
           >
-            <Box sx={{ width: 750 }} role="presentation">
+            <Box sx={{ width:isMobile ? '100%' : 750 }} role="presentation">
               <IconButton
                 onClick={() => setDrawerOpen(false)}
                 sx={{ position: 'absolute', left: 8, top: 8 }}
@@ -289,7 +392,7 @@ function Profile() {
                 <CloseIcon />
               </IconButton>
               <Typography sx={{ textAlign: 'center', pt: 3 }} variant="h6" noWrap>
-                Edit Profile
+                Profili Düzenle
               </Typography>
               <EditProfileForm profile={editedProfileData} onSave={handleSave} />
             </Box>
@@ -297,6 +400,6 @@ function Profile() {
         </Box>
       )}
     </Box>
-  )
+  )   
 }
 export default Profile
