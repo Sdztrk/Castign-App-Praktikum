@@ -19,6 +19,7 @@ import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import VideoCameraFrontIcon from '@mui/icons-material/VideoCameraFront';
 import CloseIcon from '@mui/icons-material/Close';
 import { BASE_URL } from '@/constants/BackendValues';
+import { useIsMobile } from '@/constants/Main';
 
 function Profile() {
   const router = useRouter();
@@ -30,30 +31,17 @@ function Profile() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const [artistProfile, setArtistProfile] = useState(null);
-  const [isMobile, setIsMobile] = useState(false);
 
- //"tabların mobil görünümü için kullanıldı"
-  useEffect(() => {
-    const checkIfMobile = () => window.innerWidth < 1200;
-    setIsMobile(checkIfMobile());
-
-    const handleResize = () => {
-      setIsMobile(checkIfMobile());
-    };
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-//
-
-
+  const isMobile = useIsMobile(800)
 useEffect(() => {
   async function fetchArtistProfile() {
-    if (!userInfo || !userInfo.loggedIn) {
-      router.push('/login');
+    if (userInfo.user === null) {
       return;
     }
+    if (!userInfo.loggedIn) {
+        router.push('/login');
+        return;
+    } 
 
     const accessToken = Cookies.get("accessToken");
     if (accessToken) {
@@ -337,7 +325,7 @@ useEffect(() => {
               height: 'auto', 
               margin: 2 
             }}>
-              <video controls key={artistProfile ? artistProfile.video : 'default-key'} style={{ width: '100%', height: '200px' }}>
+              <video controls key={artistProfile ? artistProfile.video : 'default-key'} style={{ width: '100%', height: 'auto', maxHeight:"325px" }}>
                 <source src={artistProfile ? BackendMediaPath + artistProfile.video : ''} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
@@ -364,7 +352,7 @@ useEffect(() => {
       onChange={handleTabChange}
       centered={!isMobile} 
       variant={isMobile ? 'scrollable' : null} 
-      scrollButtons={isMobile ? 'auto' : false}
+      scrollButtons={isMobile? 'auto' : false}
       allowScrollButtonsMobile={isMobile} 
     >
               <Tab label="Fiziksel Özellikler" />
