@@ -10,7 +10,7 @@ import {
   InputAdornment,
   IconButton,
   MenuItem,
-  Alert
+  Alert,
 } from "@mui/material";
 import corporateImg from "@/public/auth/corporate-new.png";
 import personalImg from "@/public/auth/personal-new.png";
@@ -18,80 +18,104 @@ import { Field, Form, Formik } from "formik";
 import { useState } from "react";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import Selection from "@/component/auth/Selection"
-import { initialValuesReg, regiterSchema } from "@/component/auth/yupAndInitialValues"
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import Selection from "@/component/auth/Selection";
+import {
+  initialValuesReg,
+  regiterSchema,
+} from "@/component/auth/yupAndInitialValues";
 import { mainColor } from "@/constants/Colors";
-import API from '@/helpers/ApiBuilder';
+import API from "@/helpers/ApiBuilder";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
-  const [selectedUserRole, setSelectedUserRole] = useState()
-  const [personal, setPersonal] = useState(true)
-  const [registerError, setRegisterError] = useState('');
+  const [selectedUserRole, setSelectedUserRole] = useState("");
+  const [personal, setPersonal] = useState(true);
+  const [registerError, setRegisterError] = useState("");
 
-  const router = useRouter()
+  const router = useRouter();
   const redirectToLogin = () => {
-    router.push("/login")
-  }
+    router.push("/login");
+  };
 
   const handleRegister = async (values, actions) => {
     try {
       delete values["password2"];
-      values["user_type"] = personal ? "personnel" : "corporate"
-      values["user_role"] = selectedUserRole
-      const registerResponse = await API.post('register', values);
+      values["user_type"] = personal ? "personnel" : "corporate";
+      values["user_role"] = selectedUserRole;
+      const registerResponse = await API.post("register", values);
       const accessToken = registerResponse?.access;
       if (accessToken) {
         document.cookie = `accessToken=${accessToken};`;
-        router.push('/').then(() => router.reload());
+        router.push("/").then(() => router.reload());
       } else {
         // If accessToken is undefined, set an error message
-        setRegisterError('Register failed. Please check your credentials.');
+        setRegisterError("Register failed. Please check your credentials.");
       }
     } catch (error) {
-      console.log(error)
-      setRegisterError('Opps. Register failed.');
+      console.log(error);
+      setRegisterError("Opps. Register failed.");
     }
   };
 
-
   return (
-    <Box sx={{
-      width: '100%',
-      height: '100vh',
-      marginTop: 20,
-      backgroundImage: `url(${corporateImg})`,
-      backgroundSize: 'cover', // Cover the entire box
-      backgroundPosition: 'center', // Center the image
-    }}>
-
+    <Box
+      sx={{
+        width: "100%",
+        height: "100vh",
+        marginTop: 20,
+        backgroundImage: `url(${corporateImg})`,
+        backgroundSize: "cover", // Cover the entire box
+        backgroundPosition: "center", // Center the image
+      }}
+    >
       <Grid container p={5} alignItems="center" justifyContent="center">
-        <Grid item md={6} xl={6} display={{ xs: "none", sm: "block" }} >
-          {personal
-            ?
+        <Grid item md={6} xl={6} display={{ xs: "none", sm: "block" }}>
+          {personal ? (
             <Image src={personalImg} height={550} />
-            :
+          ) : (
             <Image src={corporateImg} height={550} />
-          }
+          )}
         </Grid>
-        <Grid item xl={4} xs={12} md={6} >
+        <Grid item xl={4} xs={12} md={6}>
           <Card sx={{ maxWidth: "100%", paddingX: "2rem" }}>
             <CardContent>
-              <Box sx={{ display: 'flex', width: "100%", borderRadius: "0px", paddingBottom: "0.3rem" }} >
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  borderRadius: "0px",
+                  paddingBottom: "0.3rem",
+                }}
+              >
                 <MenuItem
                   onClick={() => setPersonal(true)}
-                  sx={{ bgcolor: personal ? mainColor : "grey.100", width: "50%", display: "flex", justifyContent: "center" }}
+                  sx={{
+                    bgcolor: personal ? mainColor : "grey.100",
+                    width: "50%",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
                 >
-                  <Typography sx={{ color: !personal ? "black" : "white" }}>Bireysel</Typography>
+                  <Typography sx={{ color: !personal ? "black" : "white" }}>
+                    Bireysel
+                  </Typography>
                 </MenuItem>
-                <MenuItem textAlign="center"
+                <MenuItem
+                  textAlign="center"
                   onClick={() => setPersonal(false)}
-                  sx={{ bgcolor: !personal ? mainColor : "grey.100", width: "50%", display: "flex", justifyContent: "center" }}
+                  sx={{
+                    bgcolor: !personal ? mainColor : "grey.100",
+                    width: "50%",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
                 >
-                  <Typography sx={{ color: personal ? "black" : "white" }}>Kurumsal</Typography>
+                  <Typography sx={{ color: personal ? "black" : "white" }}>
+                    Kurumsal
+                  </Typography>
                 </MenuItem>
               </Box>
               <Formik
@@ -124,7 +148,7 @@ const Register = () => {
                     />
                     <Field
                       as={TextField}
-                      type="email"
+                      type="text"
                       variant="outlined"
                       label="Soyisim"
                       fullWidth
@@ -194,7 +218,10 @@ const Register = () => {
                       }}
                     />
                     {/* This is the selection that we render conditionaly, if user want to register his personal account he will see the proper roles, otherwise it will be the corporate */}
-                    <Selection personal={personal} setSelectedUserRole={setSelectedUserRole} />
+                    <Selection
+                      personal={personal}
+                      setSelectedUserRole={setSelectedUserRole}
+                    />
                     {registerError && (
                       <Alert severity="error" sx={{ mb: 2 }}>
                         {registerError}
@@ -202,7 +229,13 @@ const Register = () => {
                     )}
                     <Stack justifyContent="center" alignItems="center" mt={2}>
                       <Button
-                        sx={{ border: 1, borderColor: "grey.500", color: "#212121", width: "50%", ':hover': { bgcolor: mainColor, color: "white" }, }}
+                        sx={{
+                          border: 1,
+                          borderColor: "grey.500",
+                          color: "#212121",
+                          width: "50%",
+                          ":hover": { bgcolor: mainColor, color: "white" },
+                        }}
                         type="submit"
                         size="large"
                       >
