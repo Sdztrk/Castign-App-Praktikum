@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -9,75 +9,64 @@ import { CategoriesJSON } from "@/constants/Categories";
 export default function BasicSelect({ personal, setSelectedUserRole }) {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [subCategories, setSubCategories] = useState([]);
+  const [selectedSubCategory, setSelectedSubCategory] = useState("");
 
-  // Birincil kategori değişikliği için işleyici
+  useEffect(() => {
+    // İlk kategori seçimini sıfırla
+    setSelectedCategory("");
+    setSelectedSubCategory("");
+    setSubCategories([]);
+  }, [personal]);
+
+  // Ana kategori değişikliği işleyici
   const handleCategoryChange = (event) => {
     const category = event.target.value;
     setSelectedCategory(category);
     setSubCategories(CategoriesJSON[category]?.SubCategories || []);
+    setSelectedSubCategory("");
   };
 
-  // Alt kategori değişikliği için işleyici
+  // Alt kategori değişikliği işleyici
   const handleSubCategoryChange = (event) => {
-    console.log(event.target.value);
-    setSelectedUserRole(event.target.value);
+    const subCategory = event.target.value;
+    setSelectedSubCategory(subCategory);
+    setSelectedUserRole(subCategory);
   };
 
   return (
     <Box sx={{ minWidth: 120, mt: 1 }}>
-      {/* Bireysel veya Kurumsal seçeneğini kontrol eden Select */}
-      {personal && (
-        <FormControl fullWidth>
-          <InputLabel id="sub-category-label">Rol</InputLabel>
-          <Select
-            labelId="sub-category-label"
-            id="sub-category-select"
-            value={selectedUserRole}
-            onChange={handleSubCategoryChange}
-            label="Rol"
-          >
-            {CategoriesJSON.artists.SubCategories.map((subCategory) => (
-              <MenuItem key={subCategory.id} value={subCategory.id}>
-                {subCategory.subCategoryTitle}
+      {/* Ana Kategori Seçimi */}
+      <FormControl fullWidth>
+        <InputLabel id="category-label">Kategoriler</InputLabel>
+        <Select
+          labelId="category-label"
+          id="category-select"
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+          label="Kategoriler"
+        >
+          {Object.keys(CategoriesJSON)
+            .filter((category) =>
+              personal
+                ? category === "teams" || category === "artists"
+                : category !== "teams" && category !== "artists"
+            )
+            .map((category) => (
+              <MenuItem key={category} value={category}>
+                {CategoriesJSON[category].CategoryTitle}
               </MenuItem>
             ))}
-          </Select>
-        </FormControl>
-      )}
+        </Select>
+      </FormControl>
 
-      {/* Kurumsal seçildiğinde Kategorileri göster */}
-      {!personal && (
-        <FormControl fullWidth>
-          <InputLabel id="category-label">Kategoriler</InputLabel>
+      {/* Alt Kategori Seçimi */}
+      {subCategories.length > 0 && (
+        <FormControl fullWidth sx={{ mt: 2 }}>
+          <InputLabel id="sub-category-label">Alt Kategoriler</InputLabel>
           <Select
-            labelId="category-label"
-            id="category-select"
-            value={selectedCategory}
-            onChange={handleCategoryChange}
-            label="Kategoriler"
-          >
-            {Object.keys(CategoriesJSON)
-              .filter((c) => c !== "artists")
-              .map((category) => (
-                <MenuItem key={category} value={category}>
-                  {CategoriesJSON[category].CategoryTitle}
-                </MenuItem>
-              ))}
-          </Select>
-        </FormControl>
-      )}
-
-      {/* Seçilen kategoriye göre alt kategorileri göster */}
-      {!personal && selectedCategory && (
-        <FormControl fullWidth>
-          <InputLabel sx={{ mt: 2 }} id="sub-category-label">
-            Alt Kategoriler
-          </InputLabel>
-          <Select
-            sx={{ mt: 2 }}
             labelId="sub-category-label"
             id="sub-category-select"
-            value={selectedUserRole}
+            value={selectedSubCategory}
             onChange={handleSubCategoryChange}
             label="Alt Kategoriler"
           >

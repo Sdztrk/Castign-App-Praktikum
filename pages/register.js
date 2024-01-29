@@ -43,7 +43,7 @@ const Register = () => {
   const handleRegister = async (values, actions) => {
     try {
       delete values["password2"];
-      values["user_type"] = personal ? "personnel" : "corporate";
+      values["user_type"] = personal ? "personnel" : "management";
       values["user_role"] = selectedUserRole;
       const registerResponse = await API.post("register", values);
       const accessToken = registerResponse?.access;
@@ -221,6 +221,7 @@ const Register = () => {
                     <Selection
                       personal={personal}
                       setSelectedUserRole={setSelectedUserRole}
+                      selectedUserRole={selectedUserRole}
                     />
                     {registerError && (
                       <Alert severity="error" sx={{ mb: 2 }}>
