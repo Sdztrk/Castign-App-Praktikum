@@ -4,8 +4,6 @@ import {
   Typography,
   Drawer,
   IconButton,
-  Menu,
-  MenuItem,
 } from "@mui/material";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
@@ -40,7 +38,6 @@ function Profile() {
   const [artistProfile, setArtistProfile] = useState(null);
 
   const isMobile = useIsMobile(800);
-  console.log(artistProfile);
   useEffect(() => {
     async function fetchArtistProfile() {
       if (userInfo.user === null) {
@@ -57,7 +54,6 @@ function Profile() {
           const response = await API.get("get_artist_profile", accessToken);
           if (response && response.data) {
             setArtistProfile(response.data);
-            setIsSwitchChecked(response.data.is_active); // Switch durumunu güncelle
           }
         } catch (error) {
           console.error("Profil bilgisi yüklenirken bir hata oluştu:", error);
@@ -81,6 +77,7 @@ function Profile() {
       if (accessToken) {
         const profile = await API.get("get_artist_profile", accessToken);
         setArtistProfile(profile);
+        setIsSwitchChecked(profile.is_active); // Update switch status
       }
     }
     fetchArtistProfile();
@@ -241,28 +238,19 @@ function Profile() {
     const newActiveStatus = event.target.checked;
 
     try {
-      const updatedProfile = { ...artistProfile, is_active: newActiveStatus };
       const accessToken = Cookies.get("accessToken");
       if (accessToken) {
-        const response = await fetch(`${BASE_URL}update_artist_profile`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${accessToken}`,
-          },
-          body: JSON.stringify(updatedProfile),
-        });
-
-        if (response.ok) {
-          const updatedData = await response.json(); // Backend'den gelen güncellenmiş veriyi al
-          setArtistProfile(updatedData); // Profil durumunu güncelle
-          setIsSwitchChecked(newActiveStatus); // Switch durumunu güncelle
-        } else {
+        console.log({"is_active":newActiveStatus})
+        let response = await API.post("post_artist_profile", {"is_active":newActiveStatus}, accessToken);
+        console.log(response)
+        if (response?.error) {
           console.error(
             "Aktif durumu güncellenirken hata oluştu:",
             response.status
           );
           setIsSwitchChecked(artistProfile.is_active); // Hata durumunda, switch'i eski haline getir
+        } else {
+          setIsSwitchChecked(response.is_active); // Switch durumunu güncelle
         }
       }
     } catch (error) {
