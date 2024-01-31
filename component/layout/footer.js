@@ -47,8 +47,8 @@ Footer.propTypes = {
 };
 
 Footer.defaultProps = {
-  description: "Varsayılan açıklama",
-  title: "Varsayılan başlık",
+  description: "",
+  title: "",
 };
 
 export default Footer;

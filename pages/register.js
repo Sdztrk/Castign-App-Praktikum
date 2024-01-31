@@ -74,9 +74,9 @@ const Register = () => {
       <Grid container p={5} alignItems="center" justifyContent="center">
         <Grid item md={6} xl={6} display={{ xs: "none", sm: "block" }}>
           {personal ? (
-            <Image src={personalImg} height={550} />
+            <Image src={personalImg} height={550} alt="" priority />
           ) : (
-            <Image src={corporateImg} height={550} />
+            <Image src={corporateImg} height={550} alt="" priority />
           )}
         </Grid>
         <Grid item xl={4} xs={12} md={6}>
