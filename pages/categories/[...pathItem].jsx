@@ -7,8 +7,10 @@ import { CategoriesJSON } from '@/constants/Categories'
 
 const Teams = () => {
   const { query } = useRouter();
-  const subCategoryPathItem = query.pathItem;
-  const category = CategoriesJSON[subCategoryPathItem];
+  const categoryPathItem = query.pathItem ? query.pathItem[0] : "";
+  const subCategoryPathItem = query.pathItem && query.pathItem.length >= 2 ? query.pathItem[1] : ""
+  console.log(subCategoryPathItem)
+  const category = CategoriesJSON[categoryPathItem];
   const [activeSubCategory, setActiveSubCategory] = useState("")
 
   useEffect(() => {

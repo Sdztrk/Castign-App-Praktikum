@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect, useContext } from "react";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -17,6 +18,7 @@ import { mainColor } from "@/constants/Colors";
 import API from '@/helpers/ApiBuilder';
 import AppContext from '@/AppContext';
 import Cookies from 'js-cookie';
+import DropdownMain from "../menuItems/DropdownMain";
 
 
 
@@ -35,7 +37,7 @@ function ResponsiveAppBar() {
         const curentUser = await API.get('get_current_user', Cookies.get("accessToken"));
         if (curentUser) {
           setUser(curentUser?.email)
-          setUserInfo({user: curentUser, loggedIn: curentUser?.email ? true : false})
+          setUserInfo({ user: curentUser, loggedIn: curentUser?.email ? true : false })
         }
       } catch (error) {
         console.error("Error:", error);
@@ -47,13 +49,14 @@ function ResponsiveAppBar() {
   const handleLogout = () => {
     Cookies.remove('accessToken'); // Clear the authentication token
     setUser(null); // Clear user info from context
-    setUserInfo({user:null, loggedIn:false});
-    router.push('/login'); 
+    setUserInfo({ user: null, loggedIn: false });
+    router.push('/login');
   };
 
   const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  }
+    setAnchorElNav((prevAnchorEl) => (prevAnchorEl ? null : event.currentTarget));
+  };
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   }
@@ -75,7 +78,7 @@ function ResponsiveAppBar() {
 
   return (
     <AppBar component="nav" sx={{ backgroundColor: mainColor }}>
-      <Container maxWidth="xl">
+      <Container maxWidth="xl" >
         <Toolbar disableGutters>
           <img
             src='/logoy.png'
@@ -100,37 +103,24 @@ function ResponsiveAppBar() {
             >
               <MenuIcon />
             </IconButton>
-            <Menu
-              id="menu-appbar"
+            <Box
               anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
+              sx={{position:"absolute", top:57, left:-15}}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
+
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+              {Boolean(anchorElNav) && (
+                <DropdownMain onClose={handleCloseNavMenu} />
+              )}
+            </Box>
           </Box>
           <MovieOutlinedIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
               display: { xs: 'flex', md: 'none' },
@@ -144,16 +134,8 @@ function ResponsiveAppBar() {
           >
             MM
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex'}, pt:2 }}>
+            <DropdownMain />
           </Box>
           {!user ? (
             <>
