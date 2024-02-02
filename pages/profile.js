@@ -105,11 +105,23 @@ function Profile() {
 
     setEditedProfileData(artistProfile || {});
   };
+  /**
+   * Recursively replaces all null values in an object with empty strings.
+   * @param {Object} obj - The object to be processed.
+   */
+  const replaceNulls = (obj) => {
+    Object.keys(obj).forEach(key => {
+        if (obj[key] === null) {obj[key] = "";
+        } else if (typeof obj[key] === 'object' && obj[key] !== null) { replaceNulls(obj[key]);
+        }
+    });
+  }
   const handleSave = async (updatedProfile) => {
+    replaceNulls(updatedProfile);
     delete updatedProfile["is_active"];
     const accessToken = Cookies.get("accessToken");
     if (accessToken) {
-      await API.post("post_artist_profile", updatedProfile, accessToken);
+      await API.post("update_artist_profile", updatedProfile, accessToken);
       setArtistProfile(updatedProfile);
       setDrawerOpen(false);
     }
@@ -153,7 +165,7 @@ function Profile() {
           formData.append("avatar", file);
           const jwtToken = Cookies.get("accessToken");
           try {
-            const response = await fetch(`${BASE_URL}post_artist_profile`, {
+            const response = await fetch(`${BASE_URL}update_artist_profile`, {
               method: "POST",
               headers: jwtToken
                 ? {
@@ -200,7 +212,7 @@ function Profile() {
           formData.append("video", file);
           const jwtToken = Cookies.get("accessToken");
           try {
-            const response = await fetch(`${BASE_URL}post_artist_profile`, {
+            const response = await fetch(`${BASE_URL}update_artist_profile`, {
               method: "POST",
               headers: jwtToken
                 ? {
@@ -241,7 +253,7 @@ function Profile() {
       const accessToken = Cookies.get("accessToken");
       if (accessToken) {
         console.log({"is_active":newActiveStatus})
-        let response = await API.post("post_artist_profile", {"is_active":newActiveStatus}, accessToken);
+        let response = await API.post("update_artist_profile", {"is_active":newActiveStatus}, accessToken);
         console.log(response)
         if (response?.error) {
           console.error(
