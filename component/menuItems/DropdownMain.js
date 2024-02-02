@@ -2,9 +2,9 @@
 // DropdownMain.js
 
 import React from "react";
-import { menuItems } from "@/constants/menuItems";
 import MenuItems from "./MenuItems";
 import "./DropdownMain.css";
+import { CategoriesJSON } from "@/constants/Categories";
 
 /*
 -----------------------DropdownMain.js-----------------------
@@ -43,6 +43,9 @@ import "./DropdownMain.css";
 */
 
 const DropdownMain = () => {
+    let menuItems = [
+        { title: "Kategoriler", submenu: Object.values(CategoriesJSON)}
+    ];
     return (
         <nav>
             <ul className="menus">

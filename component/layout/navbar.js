@@ -18,7 +18,7 @@ import { mainColor } from "@/constants/Colors";
 import API from '@/helpers/ApiBuilder';
 import AppContext from '@/AppContext';
 import Cookies from 'js-cookie';
-import DropdownMain from "./DropdownMain";
+import DropdownMain from "../menuItems/DropdownMain";
 
 
 
