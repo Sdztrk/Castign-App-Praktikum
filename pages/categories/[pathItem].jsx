@@ -7,8 +7,9 @@ import { CategoriesJSON } from "@/constants/Categories";
 import API from "@/helpers/ApiBuilder";
 import AppContext from "@/AppContext";
 import Cookies from "js-cookie";
+import { BackendMediaPath } from "@/constants/BackendValues";
 
-const Teams = () => {
+const SubCategoriesPage = () => {
   const { query } = useRouter();
   const subCategoryPathItem = query.pathItem;
   const category = CategoriesJSON[subCategoryPathItem];
@@ -17,7 +18,7 @@ const Teams = () => {
   const { userInfo } = useContext(AppContext);
 
   useEffect(() => {
-    console.log(userInfo);
+    // Check is logged in
     if (userInfo.user === null) {
       return;
     }
@@ -25,25 +26,24 @@ const Teams = () => {
       router.push("/login");
       return;
     }
+
     if (category && category.SubCategories.length > 0) {
-      setActiveSubCategory(category.SubCategories[0].subCategoryTitle);
+      // On load, select first and call getProfiles to get profiles
+      setActiveSubCategory(category.SubCategories[0].id);
+      getProfiles(category.SubCategories[0].id);
     }
-  }, [category]);
+  }, [category, userInfo ]);
 
-  const handleSubCategoryClick = async (id) => {
-    setActiveSubCategory((prevTitle) => (prevTitle === id ? "" : id));
-
+  const getProfiles = async (id) => {
+    // Get accessToken ant check with it
     const accessToken = Cookies.get("accessToken");
-
     if (accessToken) {
       try {
         const response = await API.get(
           `get_artist_profiles_by_user_role/${id}/`,
           accessToken
         );
-        console.log(response);
         if (response && response.data) {
-          console.log(response.data);
           setProfiles(response.data);
         }
       } catch (error) {
@@ -57,63 +57,61 @@ const Teams = () => {
 
   return (
     <Box>
-      <Typography
-        style={{
-          marginTop: "95px",
-          textAlign: "center",
-          fontSize: "4.5rem",
-          fontFamily: "Varela Round",
-        }}
-        sx={{ marginTop: "85px" }}
-      >
-        {category.CategoryTitle}
-      </Typography>
-      <Box
-        sx={{
-          flexWrap: "wrap",
-          display: "flex",
-          m: "10px",
-          justifyContent: "center",
-          alignItems: "center",
-          mt: "25px",
-        }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            m: "20px",
-            justifyContent: "center",
-          }}
-        >
-          {category.SubCategories.map((subCategory, index) => (
-            <SubCategory
-              key={index}
-              {...subCategory}
-              onClick={handleSubCategoryClick}
-              isActive={activeSubCategory === subCategory.id}
-            />
-          ))}
+  <Typography
+    style={{
+      marginTop: "95px",
+      textAlign: "center",
+      fontSize: "4.5rem",
+      fontFamily: "Varela Round",
+    }}
+    sx={{ marginTop: "85px" }}
+  >
+    {category.CategoryTitle}
+  </Typography>
+  <Box
+    sx={{
+      display: "flex",
+      justifyContent: "center",
+      flexWrap: "wrap",
+      m: "10px",
+      mt: "25px",
+    }}
+  >
+    {category.SubCategories.map((subCategory, index) => (
+      <SubCategory
+        key={index}
+        {...subCategory}
+        onClick={() => {
+          setActiveSubCategory((prevId) => (prevId === subCategory.id ? "" : subCategory.id));
+          getProfiles(subCategory.id);
+      }}
+        isActive={activeSubCategory === subCategory.id}
+      />
+    ))}
+  </Box>
+  <Box
+    sx={{
+      display: "flex",
+      justifyContent: "center",
+      flexWrap: "wrap",
+      mt: "20px",
+    }}
+  >
+    {profiles && (
+      profiles.map((profile, index) => (
+        <Box key={index} sx={{ m: "20px" }}>
+          <ProductCard
+            cardTitle={`${profile.first_name} ${profile.last_name}`}
+            cardDescription={profile.introduction}
+            imageUrls={profile?.photo && [ BackendMediaPath + profile?.photo]}
+          />
         </Box>
-        <Box
-          sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}
-        >
-          {profiles && (
-            <>
-              {profiles.map((profile, index) => (
-                <Box key={index} sx={{ mr: "30px" }}>
-                  <ProductCard
-                    cardTitle={`${profile.first_name} ${profile.last_name}`}
-                    cardDescription={profile.introduction}
-                  />
-                </Box>
-              ))}
-            </>
-          )}
-        </Box>
-      </Box>
-    </Box>
+      ))
+    )}
+  </Box>
+</Box>
+
   );
 };
 
-export default Teams;
+export default SubCategoriesPage;
