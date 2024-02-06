@@ -17,8 +17,8 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import TwitterIcon from "@mui/icons-material/Twitter";
 
 const RecipeReviewCard = ({
-  cardTitle = "BAŞLIK",
-  cardDescription = "DİĞER İÇERİKLER",
+  cardTitle = "",
+  cardDescription = "",
   imageUrls = [
     "/images/m-1.jpg",
     "/images/m-2.jpg",
