@@ -17,8 +17,8 @@ import InstagramIcon from "@mui/icons-material/Instagram";
 import TwitterIcon from "@mui/icons-material/Twitter";
 
 const RecipeReviewCard = ({
-  cardTitle = "BAŞLIK",
-  cardDescription = "DİĞER İÇERİKLER",
+  cardTitle = "",
+  cardDescription = "",
   imageUrls = [
     "/images/m-1.jpg",
     "/images/m-2.jpg",
@@ -86,33 +86,36 @@ const RecipeReviewCard = ({
           style={{ width: "400px", height: "250px", display: "block" }}
           alt=""
         />
-
-        <IconButton
-          aria-label="prev"
-          onClick={handlePrevClick}
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "10px",
-            transform: "translateY(-50%)",
-            backgroundColor: "rgba(255, 255, 255, 0.7)",
-          }}
-        >
-          <ArrowBackIcon />
-        </IconButton>
-        <IconButton
-          aria-label="next"
-          onClick={handleExpandClick}
-          sx={{
-            position: "absolute",
-            top: "50%",
-            right: "10px",
-            transform: "translateY(-50%)",
-            backgroundColor: "rgba(255, 255, 255, 0.7)",
-          }}
-        >
-          <ArrowForwardIcon />
-        </IconButton>
+        {imageUrls.length > 1 &&
+          <>
+            <IconButton
+              aria-label="prev"
+              onClick={handlePrevClick}
+              sx={{
+                position: "absolute",
+                top: "50%",
+                left: "10px",
+                transform: "translateY(-50%)",
+                backgroundColor: "rgba(255, 255, 255, 0.7)",
+              }}
+            >
+              <ArrowBackIcon />
+            </IconButton>
+            <IconButton
+              aria-label="next"
+              onClick={handleExpandClick}
+              sx={{
+                position: "absolute",
+                top: "50%",
+                right: "10px",
+                transform: "translateY(-50%)",
+                backgroundColor: "rgba(255, 255, 255, 0.7)",
+              }}
+            >
+              <ArrowForwardIcon />
+            </IconButton>
+          </>
+        }
         {isHovered && (
           <>
             <CardActions sx={{ position: "absolute", top: 0, right: 0 }}>
