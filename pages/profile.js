@@ -256,13 +256,11 @@ function Profile() {
     try {
       const accessToken = Cookies.get("accessToken");
       if (accessToken) {
-        console.log({ is_active: newActiveStatus });
         let response = await API.post(
           "update_artist_profile",
           { is_active: newActiveStatus },
           accessToken
         );
-        console.log(response);
         if (response?.error) {
           console.error(
             "Aktif durumu güncellenirken hata oluştu:",

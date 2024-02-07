@@ -111,6 +111,7 @@ const SubCategoriesPage = () => {
               <ProductCard
                 cardTitle={`${profile.first_name} ${profile.last_name}`}
                 cardDescription={profile.introduction}
+                cardUrl={`/artist/detail/${profile?.profile_id}`}
                 imageUrls={[
                   profile?.photo
                     ? `${BackendMediaPath}${profile.photo}`

@@ -21,10 +21,12 @@ import {
   Twitter,
   Favorite,
 } from "@mui/icons-material";
+import { useRouter } from 'next/navigation'
 
 const RecipeReviewCard = ({
   cardTitle = "",
   cardDescription = "",
+  cardUrl = "",
   imageUrls = [
     "/images/m-1.jpg",
     "/images/m-2.jpg",
@@ -37,6 +39,7 @@ const RecipeReviewCard = ({
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const router = useRouter()
 
   const maxDescriptionLength = 100;
 
@@ -99,10 +102,11 @@ const RecipeReviewCard = ({
           maxHeight: 400,
         }}
       >
-        <img
-          src={imageUrls[selectedImageIndex]}
-          style={{ width: "400px", height: "250px", display: "block" }}
-          alt=""
+        <CardMedia
+          sx={{ height: "250px" }}
+          image={imageUrls[selectedImageIndex]}
+          title=""
+          onClick={() =>router.push(cardUrl)}
         />
         {imageUrls.length > 1 && (
           <>
@@ -173,7 +177,7 @@ const RecipeReviewCard = ({
       </CardMedia>
 
       <CardContent>
-        <Typography variant="h5" component="div" gutterBottom>
+        <Typography variant="h5" component="div" gutterBottom onClick={() =>router.push(cardUrl)}>
           {cardTitle}
         </Typography>
         <Typography variant="body2" color="text.secondary">
