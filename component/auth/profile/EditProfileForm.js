@@ -33,7 +33,7 @@ import {
   BusinessCenter,
 } from "@mui/icons-material";
 
-const EditProfileForm = ({ profile, onSave }) => {
+const EditProfileForm = ({ profile, onSave, onCancel }) => {
   const [formData, setFormData] = useState(profile);
 
   const handleChange = (event) => {
@@ -48,10 +48,6 @@ const EditProfileForm = ({ profile, onSave }) => {
     event.preventDefault();
     onSave(formData);
   };
-  const handleCancel = () => {
-    setFormData(profile);
-  };
-
   return (
     <Box component="form" onSubmit={handleSubmit} sx={{ p: 2 }}>
       <Typography variant="h6">Genel Bilgiler</Typography>
@@ -474,10 +470,10 @@ const EditProfileForm = ({ profile, onSave }) => {
           mt: 2,
         }}
       >
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" color="success">
           Save
         </Button>
-        <Button variant="outlined" color="error" onClick={handleCancel}>
+        <Button variant="outlined" color="error" onClick={onCancel}>
           Cancel
         </Button>
       </Box>
