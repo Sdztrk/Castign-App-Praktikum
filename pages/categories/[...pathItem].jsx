@@ -40,7 +40,6 @@ const SubCategoriesPage = () => {
   }, [category, userInfo]);
 
   const getProfiles = async (id) => {
-    console.log(id)
     // Get accessToken ant check with it
     const accessToken = Cookies.get("accessToken");
     if (accessToken) {
