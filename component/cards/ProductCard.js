@@ -102,10 +102,10 @@ const RecipeReviewCard = ({
           maxHeight: 400,
         }}
       >
-        <CardMedia
-          sx={{ height: "250px" , minWidth: "400px" }}
-          image={imageUrls[selectedImageIndex]}
-          title=""
+        <img
+          src={imageUrls[selectedImageIndex]}
+          style={{ width: "100%",height:"250px", display: "block", objectFit:"cover" }}
+          alt=""
           onClick={() =>router.push(cardUrl)}
         />
         {imageUrls.length > 1 && (
