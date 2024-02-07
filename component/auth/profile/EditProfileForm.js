@@ -1,31 +1,44 @@
-import React, { useState } from 'react';
-import { Box, TextField, Button, Typography, InputAdornment,textarea } from '@mui/material';
-import SchoolIcon from '@mui/icons-material/School';
-import WorkIcon from '@mui/icons-material/Work';
-import WcIcon from '@mui/icons-material/Wc';
-import CakeIcon from '@mui/icons-material/Cake';
-import LanguageIcon from '@mui/icons-material/Language';
-import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import DriveEtaIcon from '@mui/icons-material/DriveEta';
-import PersonSearchIcon from '@mui/icons-material/PersonSearch';
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import HeightIcon from '@mui/icons-material/Height';
-import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-import PaletteIcon from '@mui/icons-material/Palette';
-import AccessibilityIcon from '@mui/icons-material/Accessibility';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import PhoneIcon from '@mui/icons-material/Phone';
-import BusinessCenterIcon from '@mui/icons-material/BusinessCenter'; 
+import React, { useState } from "react";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  InputAdornment,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
+
+import {
+  School,
+  Work,
+  Wc,
+  Cake,
+  Language,
+  AccountTree,
+  DriveEta,
+  PersonSearch,
+  StarBorder,
+  Visibility,
+  Height,
+  FitnessCenter,
+  Palette,
+  Accessibility,
+  Facebook,
+  Instagram,
+  LocationOn,
+  Phone,
+  BusinessCenter,
+} from "@mui/icons-material";
 
 const EditProfileForm = ({ profile, onSave }) => {
   const [formData, setFormData] = useState(profile);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setFormData(prevData => ({
+    setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
@@ -36,8 +49,8 @@ const EditProfileForm = ({ profile, onSave }) => {
     onSave(formData);
   };
   const handleCancel = () => {
-     setFormData(profile);   
-  }
+    setFormData(profile);
+  };
 
   return (
     <Box component="form" onSubmit={handleSubmit} sx={{ p: 2 }}>
@@ -46,73 +59,92 @@ const EditProfileForm = ({ profile, onSave }) => {
         fullWidth
         label="Country"
         name="citizen"
-        value={formData.citizen || ''}
+        value={formData.citizen || ""}
         onChange={handleChange}
         margin="normal"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <LocationOnIcon />
+              <LocationOn />
             </InputAdornment>
           ),
+        }}
+        inputProps={{
+          pattern: "[A-Za-zğüşöçİĞÜŞÖÇ ,]+",
+          title: "Lütfen yalnızca harf, boşluk ve virgül girin",
         }}
       />
       <TextField
         fullWidth
         label="University"
         name="university"
-        value={formData.university || ''}
+        value={formData.university || ""}
         onChange={handleChange}
         margin="normal"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <SchoolIcon />
+              <School />
             </InputAdornment>
           ),
+        }}
+        inputProps={{
+          pattern: "[A-Za-zğüşöçİĞÜŞÖÇ ,]+",
+          title: "Lütfen yalnızca harf, boşluk ve virgül girin",
         }}
       />
       <TextField
         fullWidth
         label="Agency"
         name="agency"
-        value={formData.agency || ''}
+        value={formData.agency || ""}
         onChange={handleChange}
         margin="normal"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <WorkIcon />
+              <Work />
             </InputAdornment>
           ),
         }}
+        inputProps={{
+          pattern: "[A-Za-zğüşöçİĞÜŞÖÇ ,]+",
+          title: "Lütfen yalnızca harf, boşluk ve virgül girin",
+        }}
       />
-      <TextField
-        fullWidth
-        label="Gender"
-        name="gender"
-        value={formData.gender || ''}
-        onChange={handleChange}
-        margin="normal"
-        InputProps={{
-          startAdornment: (
+      <FormControl fullWidth margin="normal">
+        <InputLabel id="gender-label">Gender</InputLabel>
+        <Select
+          labelId="gender-label"
+          id="gender"
+          name="gender"
+          value={formData.gender || ""}
+          onChange={handleChange}
+          startAdornment={
             <InputAdornment position="start">
-              <WcIcon />
+              <Wc />
             </InputAdornment>
-          ),
-        }}
-      />
+          }
+          label="Gender"
+        >
+          <MenuItem value="M">Erkek</MenuItem>
+          <MenuItem value="F">Kadın</MenuItem>
+          <MenuItem value="O">Diğer</MenuItem>
+        </Select>
+      </FormControl>
       <TextField
+        id="date"
         fullWidth
+        type="date"
         label="Birthdate"
         name="birthdate"
-        value={formData.birthdate || ''}
+        value={formData.birthdate || ""}
         onChange={handleChange}
         margin="normal"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <CakeIcon />
+              <Cake />
             </InputAdornment>
           ),
         }}
@@ -121,58 +153,70 @@ const EditProfileForm = ({ profile, onSave }) => {
         fullWidth
         label="Languages"
         name="languages"
-        value={formData.languages || ''}
+        value={formData.languages || ""}
         onChange={handleChange}
         margin="normal"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <LanguageIcon />
+              <Language />
             </InputAdornment>
           ),
+        }}
+        inputProps={{
+          pattern: "[A-Za-zğüşöçİĞÜŞÖÇ ,]+",
+          title: "Lütfen yalnızca harf, boşluk ve virgül girin",
         }}
       />
       <TextField
         fullWidth
         label="Branch"
         name="branch"
-        value={formData.branch || ''}
+        value={formData.branch || ""}
         onChange={handleChange}
         margin="normal"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <AccountTreeIcon />
+              <AccountTree />
             </InputAdornment>
           ),
+        }}
+        inputProps={{
+          pattern: "[A-Za-zğüşöçİĞÜŞÖÇ ,]+",
+          title: "Lütfen yalnızca harf, boşluk ve virgül girin",
         }}
       />
       <TextField
         fullWidth
         label="Department"
         name="department"
-        value={formData.department || ''}
+        value={formData.department || ""}
         onChange={handleChange}
         margin="normal"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <BusinessCenterIcon />
+              <BusinessCenter />
             </InputAdornment>
           ),
+        }}
+        inputProps={{
+          pattern: "[A-Za-zğüşöçİĞÜŞÖÇ ,]+",
+          title: "Lütfen yalnızca harf, boşluk ve virgül girin",
         }}
       />
       <TextField
         fullWidth
         label="Driving Licence"
         name="driving_licence"
-        value={formData.driving_licence || ''}
+        value={formData.driving_licence || ""}
         onChange={handleChange}
         margin="normal"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <DriveEtaIcon />
+              <DriveEta />
             </InputAdornment>
           ),
         }}
@@ -181,122 +225,154 @@ const EditProfileForm = ({ profile, onSave }) => {
         fullWidth
         label="Manager"
         name="manager"
-        value={formData.manager || ''}
+        value={formData.manager || ""}
         onChange={handleChange}
         margin="normal"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <PersonSearchIcon />
+              <PersonSearch />
             </InputAdornment>
           ),
+        }}
+        inputProps={{
+          pattern: "[A-Za-zğüşöçİĞÜŞÖÇ ,]+",
+          title: "Lütfen yalnızca harf, boşluk ve virgül girin",
         }}
       />
       <TextField
         fullWidth
         label="References"
         name="references"
-        value={formData.references || ''}
+        value={formData.references || ""}
         onChange={handleChange}
         margin="normal"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <StarBorderIcon />
+              <StarBorder />
             </InputAdornment>
           ),
         }}
+        inputProps={{
+          pattern: "[A-Za-zğüşöçİĞÜŞÖÇ ,]+",
+          title: "Lütfen yalnızca harf, boşluk ve virgül girin",
+        }}
       />
 
-      <Typography variant="h6" sx={{ mt: 4 }}>Fiziksel Özellikler</Typography>
+      <Typography variant="h6" sx={{ mt: 4 }}>
+        Fiziksel Özellikler
+      </Typography>
       <TextField
         fullWidth
         label="Eye Color"
         name="eye_color"
-        value={formData.eye_color || ''}
+        value={formData.eye_color || ""}
         onChange={handleChange}
         margin="normal"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <VisibilityIcon />
+              <Visibility />
             </InputAdornment>
           ),
+        }}
+        inputProps={{
+          pattern: "[A-Za-zğüşöçİĞÜŞÖÇ ,]+",
+          title: "Lütfen yalnızca harf, boşluk ve virgül girin",
         }}
       />
       <TextField
         fullWidth
         label="Height"
         name="length"
-        value={formData.length || ''}
+        value={formData.length || ""}
         onChange={handleChange}
         margin="normal"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <HeightIcon />
+              <Height />
             </InputAdornment>
           ),
+        }}
+        inputProps={{
+          pattern: "[0-9]+",
+          title: "yanlıca rakam giriniz",
         }}
       />
       <TextField
         fullWidth
         label="Weight"
         name="weight"
-        value={formData.weight || ''}
+        value={formData.weight || ""}
         onChange={handleChange}
         margin="normal"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <FitnessCenterIcon />
+              <FitnessCenter />
             </InputAdornment>
           ),
+        }}
+        inputProps={{
+          pattern: "[0-9]+",
+          title: "yanlıca rakam giriniz",
         }}
       />
       <TextField
         fullWidth
         label="Skin Color"
         name="skin_color"
-        value={formData.skin_color || ''}
+        value={formData.skin_color || ""}
         onChange={handleChange}
         margin="normal"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <PaletteIcon />
+              <Palette />
             </InputAdornment>
           ),
+        }}
+        inputProps={{
+          pattern: "[A-Za-zğüşöçİĞÜŞÖÇ ,]+",
+          title: "Lütfen yalnızca harf, boşluk ve virgül girin",
         }}
       />
       <TextField
         fullWidth
         label="Body Measurements"
         name="body_size"
-        value={formData.body_size || ''}
+        value={formData.body_size || ""}
         onChange={handleChange}
         margin="normal"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <AccessibilityIcon />
+              <Accessibility />
             </InputAdornment>
           ),
+        }}
+        inputProps={{
+          pattern: "[0-9]+",
+          title: "yanlıca rakam giriniz",
         }}
       />
 
-      <Typography variant="h6" sx={{ mt: 4 }}>Sosyal Medya Hesapları</Typography>
+      <Typography variant="h6" sx={{ mt: 4 }}>
+        Sosyal Medya Hesapları
+      </Typography>
       <TextField
         fullWidth
         label="Facebook Address"
         name="facebook"
-        value={formData.facebook || ''}
+        value={formData.facebook || ""}
         onChange={handleChange}
         margin="normal"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <FacebookIcon />
+              <Facebook />
             </InputAdornment>
           ),
         }}
@@ -305,29 +381,31 @@ const EditProfileForm = ({ profile, onSave }) => {
         fullWidth
         label="Instagram Address"
         name="instagram"
-        value={formData.instagram || ''}
+        value={formData.instagram || ""}
         onChange={handleChange}
         margin="normal"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <InstagramIcon />
+              <Instagram />
             </InputAdornment>
           ),
         }}
       />
-       <Typography variant="h6" sx={{ mt: 4 }}>İletişim Bilgiler</Typography>
+      <Typography variant="h6" sx={{ mt: 4 }}>
+        İletişim Bilgiler
+      </Typography>
       <TextField
         fullWidth
         label="Facebook Address"
         name="facebook"
-        value={formData.facebook || ''}
+        value={formData.facebook || ""}
         onChange={handleChange}
         margin="normal"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <FacebookIcon />
+              <Facebook />
             </InputAdornment>
           ),
         }}
@@ -336,67 +414,73 @@ const EditProfileForm = ({ profile, onSave }) => {
         fullWidth
         label="Instagram Address"
         name="instagram"
-        value={formData.instagram || ''}
+        value={formData.instagram || ""}
         onChange={handleChange}
         margin="normal"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <InstagramIcon />
+              <Instagram />
             </InputAdornment>
           ),
         }}
       />
-        <TextField
+      <TextField
         fullWidth
         label="Telefon Numarası"
         name="phone"
-        value={formData.phone || ''}
+        value={formData.phone || ""}
         onChange={handleChange}
         margin="normal"
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <PhoneIcon />
+              <Phone />
             </InputAdornment>
           ),
         }}
+        inputProps={{
+          pattern: "[0-9]+",
+          title: "yanlıca rakam giriniz",
+        }}
       />
- <Typography variant="h6" sx={{ mt: 4 }}>Hakkımda</Typography>
- <textarea
-    name="introduction"
-    value={formData.introduction || ''}
-    onChange={handleChange}
-    style={{
-      width: '100%', 
-      padding: '18.5px 14px', 
-      fontSize: '1rem', 
-      fontFamily: '"Roboto","Helvetica","Arial",sans-serif', 
-      borderRadius: 4,
-      borderColor: 'rgba(0, 0, 0, 0.23)',
-      '&:hover': {
-        borderColor: 'rgba(0, 0, 0, 0.87)', 
-      },
-      '&:focus': {
-        outline: '2px solid #3f51b5', 
-      },
-    }}
-    rows={4}
-  />
-<Box
-  sx={{
-    display: 'flex',
-    justifyContent: 'space-between', 
-    mt: 2, 
-  }}
->
-<Button type="submit" variant="contained">
-    Save 
-  </Button>
-  <Button variant="outlined" color="error" onClick={handleCancel}>
-    Cancel
-  </Button>
-</Box>
+      <Typography variant="h6" sx={{ mt: 4 }}>
+        Hakkımda
+      </Typography>
+      <textarea
+        name="introduction"
+        value={formData.introduction || ""}
+        onChange={handleChange}
+        style={{
+          width: "100%",
+          padding: "18.5px 14px",
+          fontSize: "1rem",
+          fontFamily: '"Roboto","Helvetica","Arial",sans-serif',
+          borderRadius: 4,
+          borderColor: "rgba(0, 0, 0, 0.23)",
+          "&:hover": {
+            borderColor: "rgba(0, 0, 0, 0.87)",
+          },
+          "&:focus": {
+            outline: "2px solid #3f51b5",
+          },
+        }}
+        rows={4}
+      />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          mt: 2,
+        }}
+      >
+        <Button type="submit" variant="contained">
+          Save
+        </Button>
+        <Button variant="outlined" color="error" onClick={handleCancel}>
+          Cancel
+        </Button>
+      </Box>
     </Box>
   );
 };
