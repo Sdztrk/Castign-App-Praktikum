@@ -7,11 +7,13 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Box, Grid, Card, CardContent, Typography, Avatar, CircularProgress, Alert } from '@mui/material';
 import { BackendMediaPath } from '@/constants/BackendValues';
 import Divider from '@mui/material/Divider';
+import { useIsMobile } from '@/constants/Main';
 
 const ArtistProfilePage = ({ }) => {
     const { router, query } = useRouter();
     const { userInfo } = useContext(AppContext);
     const userId = query.pathItem;
+    const isMobile = useIsMobile(800)
 
     // Use state to manage the artist profile
     const [artistProfile, setArtistProfile] = useState(null);
@@ -55,10 +57,13 @@ const ArtistProfilePage = ({ }) => {
         );
     }
     return (
-        <Box p={15} >
+        <Box p={isMobile ? 0 : 11} mt={isMobile ? 8 : 0}>
             {artistProfile && (
 
-                <Grid container sx={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.25)', bgcolor: 'background.paper', borderRadius: 2 }}>
+                <Grid container sx={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.25)', bgcolor: 'background.paper', borderRadius: 2 , 
+                backgroundImage: `url(${"/images/carousel/carousel_2.png"})`,
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',}}>
                     {/* Left Top Column */}
                     <Grid item xs={12} md={4} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         {/* Image */}
@@ -66,17 +71,17 @@ const ArtistProfilePage = ({ }) => {
                             alt={`${artistProfile.first_name} ${artistProfile.last_name}`}
                             src={BackendMediaPath + artistProfile.photo || "path/to/default/image.jpg"}
                             sx={{
-                                width: { xs: '50vw', sm: '30vw', md: 275, },
-                                height: { xs: '50vw', sm: '30vw', md: 275, },
+                                width: { xs: '50vw', sm: '30vw', md: 300, },
+                                height: { xs: '50vw', sm: '30vw', md: 300, },
                                 margin: 2
                             }}
                         />
                     </Grid>
                     {/* Middle Top Column */}
                     <Grid item xs={12} md={4}>
-                        <Card sx={{ height: 375, margin: 2 }} >
+                        <Card sx={{ height: 325, margin: 0.75, backgroundColor: 'rgba(255, 255, 255, 0.85)' }}>
                             <CardContent>
-                                <Typography variant="h5">{' '}<Person sx={{ fontSize: 33 }} /> Kisisel bilgiler</Typography>
+                                <Typography variant="h6">{' '}<Person sx={{ fontSize: 33 }} /> Kisisel bilgiler</Typography>
                                 <Divider sx={{ bgcolor: 'black', my: 1 }} />
                                 <Typography variant="body1" m={2}>
                                     <Typography component="span" variant="body1" sx={{ fontWeight: 'bold' }}> Isim:</Typography>
@@ -107,9 +112,9 @@ const ArtistProfilePage = ({ }) => {
                     </Grid>
                     {/* Right Top Column */}
                     <Grid item xs={12} md={4}>
-                        <Card sx={{ height: 375, margin: 2 }} >
+                        <Card sx={{ height: 325, margin: 0.75, backgroundColor: 'rgba(255, 255, 255, 0.85)' }} >
                             <CardContent>
-                                <Typography variant="h5"><Face2 /> Vucut ozellikleri</Typography>
+                                <Typography variant="h6"><Face2 /> Vucut ozellikleri</Typography>
                                 <Divider sx={{ bgcolor: 'black', my: 1 }} />
                                 <Typography variant="body1" m={2}>
                                     <Typography component="span" variant="body1" sx={{ fontWeight: 'bold' }}> Cinsiyet:</Typography>
@@ -142,7 +147,7 @@ const ArtistProfilePage = ({ }) => {
                     {/* Right Bottom Column */}
                     <Grid item xs={12} md={4}>
                         {/* Basic Information */}
-                        <Card sx={{ height: 375, margin: 2 }}>
+                        <Card sx={{ height: 325, margin: 0.75, backgroundColor: 'rgba(255, 255, 255, 0.85)' }}>
                             <CardContent>
                                 <Typography variant="h6"><Work /> Profesyonel bilgi</Typography>
                                 <Divider sx={{ bgcolor: 'black', my: 1 }} />
@@ -173,7 +178,7 @@ const ArtistProfilePage = ({ }) => {
                     {/* Middle Bottom Column */}
                     <Grid item xs={12} md={4}>
                         {/* Other Information */}
-                        <Card sx={{ height: 375, margin: 2 }}>
+                        <Card sx={{ height: 325, margin: 0.75, backgroundColor: 'rgba(255, 255, 255, 0.85)' }}>
                             <CardContent>
                                 <Typography variant="h6"><ConnectWithoutContact sx={{ fontSize: 30 }} /> Sosyal platformlar</Typography>
                                 <Divider sx={{ bgcolor: 'black', my: 1 }} />
@@ -192,11 +197,10 @@ const ArtistProfilePage = ({ }) => {
                     {/* Right Bottom Column */}
                     <Grid item xs={12} md={4}>
                         {/* Other Information */}
-                        <Card sx={{ height: 375, margin: 2 }}>
-                            <CardContent>
-                                <Typography variant="h6"><SlowMotionVideo sx={{ fontSize: 30 }} /> Video</Typography>
-                                <hr />
-                                <video controls style={{width: '100%',height: 'auto',margin: 2,}}>
+                        <Card sx={{ height: 325, margin: 0.75, backgroundColor: 'rgba(255, 255, 255, 0.85)' }}>
+                            <CardContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                
+                                <video controls style={{minWidth: '400px',height: '295px'}}>
                                     <source src={BackendMediaPath + artistProfile.video} type="video/mp4" />
                                     Sorry, your browser doesn't support embedded videos.
                                 </video>

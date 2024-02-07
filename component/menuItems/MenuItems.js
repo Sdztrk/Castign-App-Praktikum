@@ -34,7 +34,7 @@ const MenuItems = ({ items, depthLevel }) => {
     };
     return (
         <li className="menu-items" ref={ref} onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
-            {items.submenu ||  items.SubCategories ? (
+            {items?.submenu ||  items?.SubCategories ? (
                 <>
                     {/* Render link/button for submenu */}
                     <a
@@ -44,17 +44,17 @@ const MenuItems = ({ items, depthLevel }) => {
                         onClick={() => setDropdown((prev) => !prev)}
                         className="menuItemsLink"
                     >
-                        {items.title ? items.title  : (items.CategoryTitle ? items.CategoryTitle: items.subCategoryTitle)}
+                        {items?.title ? items?.title  : (items?.CategoryTitle ? items?.CategoryTitle: items?.subCategoryTitle)}
                         {" "}
                         {depthLevel > 0 ? <span> &raquo; </span> : <span className="arrow" />}
                     </a>
                     {/* Render nested Dropdown component for submenus */}
-                    <Dropdown depthLevel={depthLevel} submenus={items.submenu ? items.submenu : items.SubCategories} dropdown={dropdown} />
+                    <Dropdown depthLevel={depthLevel} submenus={items?.submenu ? items?.submenu : items?.SubCategories} dropdown={dropdown} />
                 </>
             ) : (
                 // Render link for leaf menu items
-                <a href={`/categories/${items.urlPath}`} className="menuItemsLink">
-                    {items.title ? items.title  : (items.CategoryTitle ? items.CategoryTitle: items.subCategoryTitle)}
+                <a href={`/categories/${items?.urlPath}`} className="menuItemsLink">
+                    {items?.title ? items?.title  : (items?.CategoryTitle ? items?.CategoryTitle: items?.subCategoryTitle)}
                 </a>
             )}
         </li>

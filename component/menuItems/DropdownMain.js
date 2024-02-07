@@ -36,7 +36,7 @@ import { CategoriesJSON } from "@/constants/Categories";
    clicks outside of the dropdown, closing it when necessary. It also checks the window width to determine
    whether to show the dropdown on hover.
 
-   The component conditionally renders a link/button for submenu items or a link for leaf menu items.
+   The component conditionally renders a link/button for submenu items or a link for leaf menu items?.
    For submenu items, it renders a nested Dropdown component for handling nested submenus.
 
    Note: The actual rendering logic for the MenuItems is encapsulated in the return statement.

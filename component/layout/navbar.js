@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -9,7 +9,6 @@ import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import MovieOutlinedIcon from '@mui/icons-material/MovieOutlined';
@@ -18,6 +17,7 @@ import { mainColor } from "@/constants/Colors";
 import API from '@/helpers/ApiBuilder';
 import AppContext from '@/AppContext';
 import Cookies from 'js-cookie';
+import { BackendMediaPath } from '@/constants/BackendValues';
 import DropdownMain from "../menuItems/DropdownMain";
 
 
@@ -30,6 +30,7 @@ function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [user, setUser] = useState(null);
+  const [photoPath, setPhotoPath] = useState("/static/images/avatar/2.jpg")
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,7 +38,8 @@ function ResponsiveAppBar() {
         const curentUser = await API.get('get_current_user', Cookies.get("accessToken"));
         if (curentUser) {
           setUser(curentUser?.email)
-          setUserInfo({ user: curentUser, loggedIn: curentUser?.email ? true : false })
+          setUserInfo({user: curentUser, loggedIn: curentUser?.email ? true : false})
+          setPhotoPath(BackendMediaPath + curentUser?.photo)
         }
       } catch (error) {
         console.error("Error:", error);
@@ -150,7 +152,7 @@ function ResponsiveAppBar() {
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                  <Avatar alt="Remy Sharp" src={photoPath} />
                 </IconButton>
               </Tooltip>
               <Menu
