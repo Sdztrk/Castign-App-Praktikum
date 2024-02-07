@@ -103,7 +103,7 @@ const RecipeReviewCard = ({
         }}
       >
         <CardMedia
-          sx={{ height: "250px" }}
+          sx={{ height: "250px" , minWidth: "400px" }}
           image={imageUrls[selectedImageIndex]}
           title=""
           onClick={() =>router.push(cardUrl)}
