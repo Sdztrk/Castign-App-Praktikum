@@ -45,7 +45,9 @@ const Register = () => {
       delete values["password2"];
       values["user_type"] = personal ? "personnel" : "management";
       values["user_role"] = selectedUserRole;
-      const registerResponse = await API.post("register", values);
+      const registerResponseSource = await API.post("register", values);
+      const registerResponse = registerResponseSource.data[0];
+
       const accessToken = registerResponse?.access;
       if (accessToken) {
         document.cookie = `accessToken=${accessToken};`;

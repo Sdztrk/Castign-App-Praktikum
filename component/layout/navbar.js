@@ -34,8 +34,9 @@ function ResponsiveAppBar() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const curentUser = await API.get('get_current_user', Cookies.get("accessToken"));
-        console.log(curentUser)
+        const curentUserSource = await API.get('get_current_user', Cookies.get("accessToken"));
+        const curentUser = curentUserSource.data[0];
+
         if (curentUser) {
           setUser(curentUser?.email)
           setUserInfo({user: curentUser, loggedIn: curentUser?.email ? true : false})

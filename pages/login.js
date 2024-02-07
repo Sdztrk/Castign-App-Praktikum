@@ -28,7 +28,9 @@ export const Login = () => {
 
   const handleLogin = async (values, actions) => {
     try {
-      const loginResponse = await API.post('login', values);
+      const loginResponseSource = await API.post('login', values);
+      const loginResponse = loginResponseSource.data[0];
+
       const accessToken = loginResponse?.access;
       if (accessToken) {
         document.cookie = `accessToken=${accessToken};`;
