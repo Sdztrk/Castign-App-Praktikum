@@ -1,20 +1,26 @@
 import React, { useState } from "react";
-import Card from "@mui/material/Card";
-import CardMedia from "@mui/material/CardMedia";
-import CardContent from "@mui/material/CardContent";
-import CardActions from "@mui/material/CardActions";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import IosShareIcon from "@mui/icons-material/IosShare";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import WhatsAppIcon from "@mui/icons-material/WhatsApp";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import TwitterIcon from "@mui/icons-material/Twitter";
+import {
+  Card,
+  CardMedia,
+  CardContent,
+  CardActions,
+  IconButton,
+  Typography,
+  Menu,
+  MenuItem,
+  Button,
+} from "@mui/material";
+
+import {
+  IosShare,
+  ArrowForward,
+  ArrowBack,
+  WhatsApp,
+  Facebook,
+  Instagram,
+  Twitter,
+  Favorite,
+} from "@mui/icons-material";
 
 const RecipeReviewCard = ({
   cardTitle = "",
@@ -30,6 +36,18 @@ const RecipeReviewCard = ({
   const [isFavorite, setIsFavorite] = useState(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [showFullDescription, setShowFullDescription] = useState(false);
+
+  const maxDescriptionLength = 100;
+
+  const displayDescription =
+    cardDescription.length > maxDescriptionLength && !showFullDescription
+      ? cardDescription.substring(0, maxDescriptionLength) + "..."
+      : cardDescription;
+
+  const toggleDescription = () => {
+    setShowFullDescription(!showFullDescription);
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -86,7 +104,7 @@ const RecipeReviewCard = ({
           style={{ width: "400px", height: "250px", display: "block" }}
           alt=""
         />
-        {imageUrls.length > 1 &&
+        {imageUrls.length > 1 && (
           <>
             <IconButton
               aria-label="prev"
@@ -99,7 +117,7 @@ const RecipeReviewCard = ({
                 backgroundColor: "rgba(255, 255, 255, 0.7)",
               }}
             >
-              <ArrowBackIcon />
+              <ArrowBack />
             </IconButton>
             <IconButton
               aria-label="next"
@@ -112,15 +130,15 @@ const RecipeReviewCard = ({
                 backgroundColor: "rgba(255, 255, 255, 0.7)",
               }}
             >
-              <ArrowForwardIcon />
+              <ArrowForward />
             </IconButton>
           </>
-        }
+        )}
         {isHovered && (
           <>
             <CardActions sx={{ position: "absolute", top: 0, right: 0 }}>
               <IconButton onClick={handleClick}>
-                <IosShareIcon style={{ color: "white" }} />
+                <IosShare sx={{ color: "white" }} />
               </IconButton>
               <Menu
                 anchorEl={anchorEl}
@@ -129,16 +147,16 @@ const RecipeReviewCard = ({
                 onClose={handleClose}
               >
                 <MenuItem onClick={handleClose}>
-                  <WhatsAppIcon /> WhatsApp
+                  <WhatsApp /> WhatsApp
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
-                  <FacebookIcon /> Facebook
+                  <Facebook /> Facebook
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
-                  <InstagramIcon /> Instagram
+                  <Instagram /> Instagram
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
-                  <TwitterIcon /> Twitter
+                  <Twitter /> Twitter
                 </MenuItem>
               </Menu>
             </CardActions>
@@ -147,7 +165,7 @@ const RecipeReviewCard = ({
                 aria-label="add to favorites"
                 onClick={handleButtonClick}
               >
-                <FavoriteIcon style={{ color: isFavorite ? "red" : "white" }} />
+                <Favorite sx={{ color: isFavorite ? "red" : "white" }} />
               </IconButton>
             </CardActions>
           </>
@@ -159,8 +177,13 @@ const RecipeReviewCard = ({
           {cardTitle}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          {cardDescription}
+          {displayDescription}
         </Typography>
+        {cardDescription.length > maxDescriptionLength && (
+          <Button size="small" onClick={toggleDescription}>
+            {showFullDescription ? "Daha az göster" : "Devamını oku"}
+          </Button>
+        )}
       </CardContent>
     </Card>
   );
