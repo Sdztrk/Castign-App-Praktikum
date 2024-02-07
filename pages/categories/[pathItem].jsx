@@ -16,6 +16,7 @@ const SubCategoriesPage = () => {
   const [activeSubCategory, setActiveSubCategory] = useState("");
   const [profiles, setProfiles] = useState(null);
   const { userInfo } = useContext(AppContext);
+  const router = useRouter();
 
   useEffect(() => {
     // Check is logged in
@@ -32,7 +33,7 @@ const SubCategoriesPage = () => {
       setActiveSubCategory(category.SubCategories[0].id);
       getProfiles(category.SubCategories[0].id);
     }
-  }, [category, userInfo ]);
+  }, [category, userInfo]);
 
   const getProfiles = async (id) => {
     // Get accessToken ant check with it
@@ -57,60 +58,64 @@ const SubCategoriesPage = () => {
 
   return (
     <Box>
-  <Typography
-    style={{
-      marginTop: "95px",
-      textAlign: "center",
-      fontSize: "4.5rem",
-      fontFamily: "Varela Round",
-    }}
-    sx={{ marginTop: "85px" }}
-  >
-    {category.CategoryTitle}
-  </Typography>
-  <Box
-    sx={{
-      display: "flex",
-      justifyContent: "center",
-      flexWrap: "wrap",
-      m: "10px",
-      mt: "25px",
-    }}
-  >
-    {category.SubCategories.map((subCategory, index) => (
-      <SubCategory
-        key={index}
-        {...subCategory}
-        onClick={() => {
-          setActiveSubCategory((prevId) => (prevId === subCategory.id ? "" : subCategory.id));
-          getProfiles(subCategory.id);
-      }}
-        isActive={activeSubCategory === subCategory.id}
-      />
-    ))}
-  </Box>
-  <Box
-    sx={{
-      display: "flex",
-      justifyContent: "center",
-      flexWrap: "wrap",
-      mt: "20px",
-    }}
-  >
-    {profiles && (
-      profiles.map((profile, index) => (
-        <Box key={index} sx={{ m: "20px" }}>
-          <ProductCard
-            cardTitle={`${profile.first_name} ${profile.last_name}`}
-            cardDescription={profile.introduction}
-            imageUrls={profile?.photo && [ BackendMediaPath + profile?.photo]}
+      <Typography
+        style={{
+          marginTop: "95px",
+          textAlign: "center",
+          fontSize: "4.5rem",
+          fontFamily: "Varela Round",
+        }}
+        sx={{ marginTop: "85px" }}
+      >
+        {category.CategoryTitle}
+      </Typography>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          flexWrap: "wrap",
+          m: "10px",
+          mt: "25px",
+        }}
+      >
+        {category.SubCategories.map((subCategory, index) => (
+          <SubCategory
+            key={index}
+            {...subCategory}
+            onClick={() => {
+              setActiveSubCategory((prevId) =>
+                prevId === subCategory.id ? "" : subCategory.id
+              );
+              getProfiles(subCategory.id);
+            }}
+            isActive={activeSubCategory === subCategory.id}
           />
-        </Box>
-      ))
-    )}
-  </Box>
-</Box>
-
+        ))}
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          flexWrap: "wrap",
+          mt: "20px",
+        }}
+      >
+        {profiles &&
+          profiles.map((profile, index) => (
+            <Box key={index} sx={{ m: "20px" }}>
+              <ProductCard
+                cardTitle={`${profile.first_name} ${profile.last_name}`}
+                cardDescription={profile.introduction}
+                imageUrls={[
+                  profile?.photo
+                    ? `${BackendMediaPath}${profile.photo}`
+                    : "/avtar.webp",
+                ]}
+              />
+            </Box>
+          ))}
+      </Box>
+    </Box>
   );
 };
 
