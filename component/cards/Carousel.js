@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Typography, Button, Box, useTheme } from "@mui/material";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { CarouselImages } from "@/constants/Carousel";
@@ -19,6 +19,16 @@ const SimpleCarousel = () => {
       (prevActiveStep) => (prevActiveStep - 1 + maxSteps) % maxSteps
     );
   };
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      handleNext();
+    }, 5000);
+    return () => {
+      clearInterval(timer);
+    };
+  }, [activeStep]);
+
   const goToLogin = () => {
     router.push("/login");
   };
@@ -54,7 +64,7 @@ const SimpleCarousel = () => {
         <Typography
           variant="subtitle1"
           sx={{
-            fontSize: "2rem", // Adjust font size accordingly
+            fontSize: "2rem",
             color: "white",
             textShadow: "1px 1px 4px rgba(0,0,0,0.7)",
           }}
@@ -106,7 +116,6 @@ const SimpleCarousel = () => {
       <Button
         size="large"
         onClick={handleBack}
-        disabled={activeStep === 0}
         sx={{
           position: "absolute",
           top: "50%",
@@ -121,7 +130,6 @@ const SimpleCarousel = () => {
       <Button
         size="large"
         onClick={handleNext}
-        disabled={activeStep === maxSteps - 1}
         sx={{
           position: "absolute",
           top: "50%",
