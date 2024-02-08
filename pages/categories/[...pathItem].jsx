@@ -12,7 +12,8 @@ import { BackendMediaPath } from "@/constants/BackendValues";
 const SubCategoriesPage = () => {
   const { query } = useRouter();
   const categoryPathItem = query.pathItem ? query.pathItem[0] : "";
-  const subCategoryPathItem = query.pathItem && query.pathItem.length >= 2 ? query.pathItem[1] : ""
+  const subCategoryPathItem =
+    query.pathItem && query.pathItem.length >= 2 ? query.pathItem[1] : "";
   const category = CategoriesJSON[categoryPathItem];
   const [activeSubCategory, setActiveSubCategory] = useState("");
   const [profiles, setProfiles] = useState(null);
@@ -28,11 +29,11 @@ const SubCategoriesPage = () => {
       router.push("/login");
       return;
     }
-    if(subCategoryPathItem){
+    if (subCategoryPathItem) {
       // If sub category id sended in path
       setActiveSubCategory(subCategoryPathItem);
       getProfiles(subCategoryPathItem);
-    }else if (category && category.SubCategories.length > 0) {
+    } else if (category && category.SubCategories.length > 0) {
       // On load, select first and call getProfiles to get profiles
       setActiveSubCategory(category.SubCategories[0].id);
       getProfiles(category.SubCategories[0].id);
@@ -40,7 +41,7 @@ const SubCategoriesPage = () => {
   }, [category, userInfo]);
 
   const getProfiles = async (id) => {
-    console.log(id)
+    console.log(id);
     // Get accessToken ant check with it
     const accessToken = Cookies.get("accessToken");
     if (accessToken) {
@@ -51,12 +52,14 @@ const SubCategoriesPage = () => {
         );
         if (response && response.data) {
           setProfiles(response.data);
+          console.log(response.data);
         }
       } catch (error) {
         console.error("Profil bilgisi yüklenirken bir hata oluştu:", error);
       }
     }
   };
+
   if (!category?.CategoryTitle) {
     return <Box>Loading...</Box>;
   }
@@ -111,7 +114,7 @@ const SubCategoriesPage = () => {
               <ProductCard
                 cardTitle={`${profile.first_name} ${profile.last_name}`}
                 cardDescription={profile.introduction}
-                cardUrl={`/artist/detail/${profile?.profile_id}`}
+                cardUrl={`/artist/detail/${profile?.id}`}
                 imageUrls={[
                   profile?.photo
                     ? `${BackendMediaPath}${profile.photo}`
