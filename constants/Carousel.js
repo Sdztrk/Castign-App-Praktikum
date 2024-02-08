@@ -1,5 +1,18 @@
 export const CarouselImages = [
-    'images/carousel/carousel_2.png',
-    'images/carousel/carousel_0.png',
-    'images/carousel/carousel_1.png',
-  ]
+  {
+    image: "images/carousel/carousel_1.webp",
+    text: "Sende networkunu genişlet ve hemen keşfedil  ",
+  },
+  {
+    image: "images/carousel/carousel_2.png",
+    text: "TOPFİYT dünyasının tüm kolaylıkarından faydalan ",
+  },
+  {
+    image: "images/carousel/carousel_3.webp",
+    text: "TEK site ÇOK çözüm ",
+  },
+  {
+    image: "images/carousel/carousel_4.png",
+    text: "keşvet keşvedil sende üye ol ve bu dünyayı tanı ",
+  },
+];
