@@ -29,7 +29,9 @@ export const Login = () => {
   const handleLogin = async (values, actions) => {
     try {
       const loginResponseSource = await API.post('login', values);
-      const loginResponse = loginResponseSource.data[0];
+      const loginResponse = loginResponseSource.data;
+
+      console.log(loginResponse);
 
       const accessToken = loginResponse?.access;
       if (accessToken) {

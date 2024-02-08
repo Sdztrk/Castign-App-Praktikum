@@ -76,7 +76,7 @@ function Profile() {
       const accessToken = Cookies.get("accessToken");
       if (accessToken) {
         const profileSource = await API.get("get_artist_profile", accessToken);
-        const profile = profileSource.data[0];
+        const profile = profileSource.data;
 
         setArtistProfile(profile);
         setIsSwitchChecked(profile.is_active); // Update switch status
@@ -179,7 +179,7 @@ function Profile() {
 
             if (response.ok) {
               const dataSource = await response.json();
-              const data = dataSource.data[0];
+              const data = dataSource.data;
 
               setArtistProfile((prevState) => ({
                 ...prevState,
@@ -228,7 +228,7 @@ function Profile() {
             });
             if (response.ok) {
               const dataSource = await response.json();
-              const data = dataSource.data[0];
+              const data = dataSource.data;
               setArtistProfile((prevState) => ({
                 ...prevState,
                 video: data.video,
@@ -260,7 +260,7 @@ function Profile() {
       if (accessToken) {
         console.log({"is_active":newActiveStatus})
         let responseSource = await API.post("update_artist_profile", {"is_active":newActiveStatus}, accessToken);
-        let response = responseSource.data[0];
+        let response = responseSource.data;
         if (response?.error) {
           console.error(
             "Aktif durumu güncellenirken hata oluştu:",

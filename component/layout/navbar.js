@@ -35,7 +35,7 @@ function ResponsiveAppBar() {
     const fetchData = async () => {
       try {
         const curentUserSource = await API.get('get_current_user', Cookies.get("accessToken"));
-        const curentUser = curentUserSource.data[0];
+        const curentUser = curentUserSource.data;
 
         if (curentUser) {
           setUser(curentUser?.email)
