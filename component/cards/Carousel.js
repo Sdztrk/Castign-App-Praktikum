@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Typography, Button, Box, useTheme } from "@mui/material";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { CarouselImages } from "@/constants/Carousel";
 import { useRouter } from "next/router";
+import AppContext from "@/AppContext";
 
 const SimpleCarousel = () => {
   const [activeStep, setActiveStep] = useState(0);
   const maxSteps = CarouselImages.length;
   const theme = useTheme();
   const router = useRouter();
+  const { userInfo } = useContext(AppContext);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => (prevActiveStep + 1) % maxSteps);
@@ -30,7 +32,7 @@ const SimpleCarousel = () => {
   }, [activeStep]);
 
   const goToLogin = () => {
-    router.push("/login");
+    router.push("/register");
   };
 
   return (
@@ -71,16 +73,18 @@ const SimpleCarousel = () => {
         >
           {CarouselImages[activeStep].text}
         </Typography>
-        <Button
-          onClick={goToLogin}
-          variant="contained"
-          color="primary"
-          sx={{
-            mt: 2,
-          }}
-        >
-          GİRİŞ YAP
-        </Button>
+        {!userInfo?.loggedIn && (
+          <Button
+            onClick={goToLogin}
+            variant="contained"
+            color="primary"
+            sx={{
+              mt: 2,
+            }}
+          >
+            ÜCRETSİZ KAYIT OLUN
+          </Button>
+        )}
       </Box>
       <Box
         sx={{
