@@ -1,73 +1,80 @@
-import React, { useState } from 'react'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import CardMedia from '@mui/material/CardMedia'
-import Typography from '@mui/material/Typography'
-import Tooltip from '@mui/material/Tooltip'
-import { useRouter } from 'next/navigation'
-
+import React, { useState } from "react";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import { useRouter } from "next/router";
+import CustomPopover from "../auth/Custompopover";
 const CategoryCard = ({ cardImage, cardTitle, urlPath, tooltipText }) => {
-  const [hovered, setHovered] = useState(false)
-  const router = useRouter()
-
-  const handleHover = () => {
-    setHovered(true)
+  const [anchorEl, setAnchorEl] = useState(null);
+  const router = useRouter();
+  const handleHover = (event) => {
+    setAnchorEl(event.currentTarget);
   };
-
   const handleLeave = () => {
-    setHovered(false)
+    setAnchorEl(null);
   };
-
-  const calculateOverlayStyle = () => {
-    return {
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      backgroundColor: 'black',
-      opacity: hovered ? 0 : 0.6, 
-      transition: 'opacity 0.3s',
-    }
-  }
+  const calculateOverlayStyle = () => ({
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0,0,0,0.6)",
+    opacity: anchorEl ? 0 : 0.9,
+    transition: "opacity 0.3s ease-in-out",
+  });
   return (
-    <box>
-      <Tooltip title={tooltipText} arrow>
-        <Card
+    <Box>
+      <Card
+        style={{
+          width: 250,
+          height: 350,
+          position: "relative",
+          overflow: "hidden",
+          margin: "10px",
+          transition: "transform 0.3s",
+          cursor: "pointer",
+        }}
+        onMouseEnter={handleHover}
+        onMouseLeave={handleLeave}
+        onClick={() => router.push(urlPath)}
+      >
+        <Box style={calculateOverlayStyle()} />
+        <CardMedia
+          component="img"
+          height="140"
+          image={cardImage}
+          alt={cardTitle}
           style={{
-            width: 250,
-            height: 350,
-            position: 'relative',
-            overflow: 'hidden',
-            margin: '10px',
-            transition: 'transform 0.3s',
-            cursor: 'pointer'          
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            zIndex: 0,
           }}
-          onMouseEnter={handleHover}
-          onMouseLeave={handleLeave}
-          onClick={() => router.push(urlPath)}
+        />
+        <CardContent
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            textAlign: "center",
+            color: "white",
+          }}
         >
-             <box style={calculateOverlayStyle()}></box>
-          <CardMedia
-            component="img"
-            height="140"
-            image={cardImage}
-            alt={cardTitle}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              zIndex: 0,
-            }}
-          />
-          <CardContent style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center', color: 'white', fontFamily: '', fontSize: 'Your-Font-Size' }}>
-            <Typography gutterBottom variant="h5" component="box">
-              {cardTitle}
-            </Typography>
-          </CardContent>
-        </Card>
-      </Tooltip>
-    </box>
+          <Typography gutterBottom variant="h5" component="div">
+            {cardTitle}
+          </Typography>
+        </CardContent>
+      </Card>
+      <CustomPopover
+        anchorEl={anchorEl}
+        handleLeave={handleLeave}
+        text={tooltipText}
+      />
+    </Box>
   );
 };
-export default CategoryCard
+export default CategoryCard;
