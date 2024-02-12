@@ -45,16 +45,11 @@ function ResponsiveAppBar() {
           setPhotoPath(BackendMediaPath + curentUser?.photo);
         }
       } catch (error) {
-        console.error("Error:", error);
+        console.info("Not logged in");
       }
     };
     fetchData();
-  }, []);
-  useEffect(() => {
-    if (userInfo?.user?.photo) {
-      setPhotoPath(BackendMediaPath + userInfo.user.photo);
-    }
-  }, [userInfo?.user?.photo]);
+  }, [userInfo?.user?.photo, Cookies.get("accessToken")]);
 
   const handleLogout = () => {
     Cookies.remove("accessToken"); // Clear the authentication token

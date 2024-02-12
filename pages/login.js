@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useContext } from "react";
 import {
   Box, Card, CardContent, Grid, TextField, Typography, Stack, Button, InputAdornment, IconButton, Alert
 } from "@mui/material";
@@ -10,9 +10,11 @@ import { useRouter } from 'next/router';
 import loginImg from "@/public/auth/login_image.png";
 import { initialValues } from "@/component/auth/yupAndInitialValues";
 import { mainColor } from "@/constants/Colors";
+import AppContext from "@/AppContext";
 import API from '@/helpers/ApiBuilder';
 
 export const Login = () => {
+  const { userInfo, setUserInfo } = useContext(AppContext);
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState('');
   const router = useRouter();
@@ -32,7 +34,7 @@ export const Login = () => {
       const accessToken = loginResponse?.access;
       if (accessToken) {
         document.cookie = `accessToken=${accessToken};`;
-        router.push('/').then(() => router.reload());
+        router.push('/');
       } else {
         // If accessToken is undefined, set an error message
         setLoginError('Login failed. Please check your credentials.');
