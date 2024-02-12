@@ -41,7 +41,6 @@ const SubCategoriesPage = () => {
   }, [category, userInfo]);
 
   const getProfiles = async (id) => {
-    console.log(id);
     // Get accessToken ant check with it
     const accessToken = Cookies.get("accessToken");
     if (accessToken) {
@@ -52,7 +51,6 @@ const SubCategoriesPage = () => {
         );
         if (response && response.data) {
           setProfiles(response.data);
-          console.log(response.data);
         }
       } catch (error) {
         console.error("Profil bilgisi yüklenirken bir hata oluştu:", error);

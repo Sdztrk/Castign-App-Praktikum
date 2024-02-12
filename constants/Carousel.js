@@ -1,14 +1,14 @@
 export const CarouselImages = [
   {
-    image: "images/carousel/carousel_1.webp",
+    image: "images/carousel/slider1.png",
     text: "Sende networkunu genişlet ve hemen keşfedil  ",
   },
   {
-    image: "images/carousel/carousel_2.png",
+    image: "images/carousel/slider2.png",
     text: "TOPFİYT dünyasının tüm kolaylıkarından faydalan ",
   },
   {
-    image: "images/carousel/carousel_3.webp",
+    image: "images/carousel/slider3.png",
     text: "TEK site ÇOK çözüm ",
   },
   {
