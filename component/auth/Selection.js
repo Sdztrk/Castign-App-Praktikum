@@ -1,52 +1,83 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import React, { useState, useEffect } from "react";
+import Box from "@mui/material/Box";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import { CategoriesJSON } from "@/constants/Categories";
 
 export default function BasicSelect({ personal, setSelectedUserRole }) {
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [subCategories, setSubCategories] = useState([]);
+  const [selectedSubCategory, setSelectedSubCategory] = useState("");
 
-  const handleChange = (event) => {
-    setSelectedUserRole(event.target.value);
+  useEffect(() => {
+    // İlk kategori seçimini sıfırla
+    setSelectedCategory("");
+    setSelectedSubCategory("");
+    setSubCategories([]);
+  }, [personal]);
+
+  // Ana kategori değişikliği işleyici
+  const handleCategoryChange = (event) => {
+    const category = event.target.value;
+    setSelectedCategory(category);
+    setSubCategories(CategoriesJSON[category]?.SubCategories || []);
+    setSelectedSubCategory("");
   };
 
-  const menuItems = personal
-    ? [
-        <MenuItem key="actor" value={"Actor"}>
-          Oyuncu
-        </MenuItem>,
-        <MenuItem key="artist" value={"Artist"}>
-          Sanatci
-        </MenuItem>,
-        <MenuItem key="director" value={"Director"}>
-          Yönetmen
-        </MenuItem>,
-      ]
-    : [
-        <MenuItem key="corporate" value={"Corporate"}>
-          Kurumsal 
-        </MenuItem>,
-        <MenuItem key="corporate_1" value={"Corporate 1"}>
-          Kurumsal 1
-        </MenuItem>,
-        <MenuItem key="corporate_2" value={"Corporate 2"}>
-          Kurumsal 2
-        </MenuItem>,
-      ];
+  // Alt kategori değişikliği işleyici
+  const handleSubCategoryChange = (event) => {
+    const subCategory = event.target.value;
+    setSelectedSubCategory(subCategory);
+    setSelectedUserRole(subCategory);
+  };
 
   return (
-    <Box sx={{ minWidth: 120, mt:1 }}>
+    <Box sx={{ minWidth: 120, mt: 1 }}>
+      {/* Ana Kategori Seçimi */}
       <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Rol</InputLabel>
+        <InputLabel id="category-label">Kategoriler</InputLabel>
         <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          onChange={handleChange}
+          labelId="category-label"
+          id="category-select"
+          value={selectedCategory}
+          onChange={handleCategoryChange}
+          label="Kategoriler"
         >
-          {menuItems}
+          {Object.keys(CategoriesJSON)
+            .filter((category) =>
+              personal
+                ? category === "teams" || category === "artists"
+                : category !== "teams" && category !== "artists"
+            )
+            .map((category) => (
+              <MenuItem key={category} value={category}>
+                {CategoriesJSON[category].CategoryTitle}
+              </MenuItem>
+            ))}
         </Select>
       </FormControl>
+
+      {/* Alt Kategori Seçimi */}
+      {subCategories.length > 0 && (
+        <FormControl fullWidth sx={{ mt: 2 }}>
+          <InputLabel id="sub-category-label">Alt Kategoriler</InputLabel>
+          <Select
+            labelId="sub-category-label"
+            id="sub-category-select"
+            value={selectedSubCategory}
+            onChange={handleSubCategoryChange}
+            label="Alt Kategoriler"
+          >
+            {subCategories.map((subCategory) => (
+              <MenuItem key={subCategory.id} value={subCategory.id}>
+                {subCategory.subCategoryTitle}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      )}
     </Box>
   );
 }
