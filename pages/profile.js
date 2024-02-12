@@ -30,7 +30,7 @@ import { BackendMediaPath } from "@/constants/BackendValues";
 
 function Profile() {
   const router = useRouter();
-  const { userInfo } = useContext(AppContext);
+  const { userInfo, setUserInfo } = useContext(AppContext);
   const [isSwitchChecked, setIsSwitchChecked] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -183,6 +183,13 @@ function Profile() {
               setArtistProfile((prevState) => ({
                 ...prevState,
                 photo: data.photo,
+              }));
+              setUserInfo((prevUserInfo) => ({
+                ...prevUserInfo,
+                user: {
+                  ...prevUserInfo.user,
+                  photo: data.photo,
+                },
               }));
             } else {
               console.error(
