@@ -60,7 +60,7 @@ const ArtistProfilePage = ({ }) => {
             {artistProfile && (
 
                 <Grid container sx={{ boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.25)', bgcolor: 'background.paper', borderRadius: 2 , 
-                backgroundImage: `url(${"/images/carousel/carousel_2.png"})`,
+                backgroundImage: `url(${"/images/detail/background.png"})`,
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',}}>
                     {/* Left Top Column */}
