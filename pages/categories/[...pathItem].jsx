@@ -12,7 +12,8 @@ import { BackendMediaPath } from "@/constants/BackendValues";
 const SubCategoriesPage = () => {
   const { query } = useRouter();
   const categoryPathItem = query.pathItem ? query.pathItem[0] : "";
-  const subCategoryPathItem = query.pathItem && query.pathItem.length >= 2 ? query.pathItem[1] : ""
+  const subCategoryPathItem =
+    query.pathItem && query.pathItem.length >= 2 ? query.pathItem[1] : "";
   const category = CategoriesJSON[categoryPathItem];
   const [activeSubCategory, setActiveSubCategory] = useState("");
   const [profiles, setProfiles] = useState(null);
@@ -28,11 +29,11 @@ const SubCategoriesPage = () => {
       router.push("/login");
       return;
     }
-    if(subCategoryPathItem){
+    if (subCategoryPathItem) {
       // If sub category id sended in path
       setActiveSubCategory(subCategoryPathItem);
       getProfiles(subCategoryPathItem);
-    }else if (category && category.SubCategories.length > 0) {
+    } else if (category && category.SubCategories.length > 0) {
       // On load, select first and call getProfiles to get profiles
       setActiveSubCategory(category.SubCategories[0].id);
       getProfiles(category.SubCategories[0].id);
@@ -56,6 +57,7 @@ const SubCategoriesPage = () => {
       }
     }
   };
+
   if (!category?.CategoryTitle) {
     return <Box>Loading...</Box>;
   }
@@ -110,7 +112,7 @@ const SubCategoriesPage = () => {
               <ProductCard
                 cardTitle={`${profile.first_name} ${profile.last_name}`}
                 cardDescription={profile.introduction}
-                cardUrl={`/artist/detail/${profile?.profile_id}`}
+                cardUrl={`/artist/detail/${profile?.id}`}
                 imageUrls={[
                   profile?.photo
                     ? `${BackendMediaPath}${profile.photo}`
