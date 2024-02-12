@@ -46,7 +46,7 @@ const Register = () => {
       values["user_type"] = personal ? "personnel" : "management";
       values["user_role"] = selectedUserRole;
       const registerResponseSource = await API.post("register", values);
-      const registerResponse = registerResponseSource.data[0];
+      const registerResponse = registerResponseSource.data;
 
       const accessToken = registerResponse?.access;
       if (accessToken) {

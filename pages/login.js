@@ -33,8 +33,6 @@ export const Login = () => {
       const loginResponseSource = await API.post('login', values);
       const loginResponse = loginResponseSource.data;
 
-      console.log(loginResponse);
-
       const accessToken = loginResponse?.access;
       if (accessToken) {
         document.cookie = `accessToken=${accessToken};`;

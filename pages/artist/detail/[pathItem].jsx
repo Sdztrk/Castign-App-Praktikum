@@ -30,9 +30,8 @@ const ArtistProfilePage = ({ }) => {
             }
             const accessToken = Cookies.get("accessToken");
             if (accessToken && userId) {
-                console.log(userId)
                 const profile = await API.get(`get_artist_profile/${userId}/`, accessToken);
-                setArtistProfile(profile);
+                setArtistProfile(profile?.data);
             }
         }
         fetchArtistProfile();
