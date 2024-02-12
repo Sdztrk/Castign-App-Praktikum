@@ -1,35 +1,33 @@
 import React, { useState, useEffect, useContext } from "react";
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
-import MenuItem from '@mui/material/MenuItem';
-import MovieOutlinedIcon from '@mui/icons-material/MovieOutlined';
-import { useRouter } from 'next/navigation'
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import Tooltip from "@mui/material/Tooltip";
+import MenuItem from "@mui/material/MenuItem";
+import MovieOutlinedIcon from "@mui/icons-material/MovieOutlined";
+import { useRouter } from "next/navigation";
 import { mainColor } from "@/constants/Colors";
-import API from '@/helpers/ApiBuilder';
-import AppContext from '@/AppContext';
-import Cookies from 'js-cookie';
-import { BackendMediaPath } from '@/constants/BackendValues';
+import API from "@/helpers/ApiBuilder";
+import AppContext from "@/AppContext";
+import Cookies from "js-cookie";
+import { BackendMediaPath } from "@/constants/BackendValues";
+import DropdownMain from "../menuItems/DropdownMain";
 
-
-
-const pages = ['Products', 'Pricing', 'Blog'];
+const pages = ["Products", "Pricing", "Blog"];
 
 function ResponsiveAppBar() {
-  const { setUserInfo } = useContext(AppContext);
-  const router = useRouter()
+  const { userInfo, setUserInfo } = useContext(AppContext);
+  const router = useRouter();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [user, setUser] = useState(null);
-  const [photoPath, setPhotoPath] = useState("/static/images/avatar/2.jpg")
+  const [photoPath, setPhotoPath] = useState("/static/images/avatar/2.jpg");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,63 +36,69 @@ function ResponsiveAppBar() {
         const curentUser = curentUserSource.data;
 
         if (curentUser) {
-          setUser(curentUser?.email)
-          setUserInfo({user: curentUser, loggedIn: curentUser?.email ? true : false})
-          setPhotoPath(BackendMediaPath + curentUser?.photo)
+          setUser(curentUser?.email);
+          setUserInfo({
+            user: curentUser,
+            loggedIn: curentUser?.email ? true : false,
+          });
+          setPhotoPath(BackendMediaPath + curentUser?.photo);
         }
       } catch (error) {
-        console.error("Error:", error);
+        console.info("Not logged in");
       }
     };
     fetchData();
-  }, []);
+  }, [userInfo?.user?.photo, Cookies.get("accessToken")]);
 
   const handleLogout = () => {
-    Cookies.remove('accessToken'); // Clear the authentication token
+    Cookies.remove("accessToken"); // Clear the authentication token
     setUser(null); // Clear user info from context
-    setUserInfo({user:null, loggedIn:false});
-    router.push('/login'); 
+    setUserInfo({ user: null, loggedIn: false });
+    router.push("/login");
   };
 
   const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  }
+    setAnchorElNav((prevAnchorEl) =>
+      prevAnchorEl ? null : event.currentTarget
+    );
+  };
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
-  }
+  };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
-  }
+  };
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
 
   const redirectToLogin = () => {
-    router.push("/login")
-  }
+    router.push("/login");
+  };
   const redirectToRegister = () => {
-    router.push("/register")
-  }
+    router.push("/register");
+  };
 
   return (
     <AppBar component="nav" sx={{ backgroundColor: mainColor }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <img
-            src='/logoy.png'
-            alt='Topfıyt'
+            src="/logoy.png"
+            alt="Topfıyt"
             onClick={() => router.push("/")}
             style={{
-              width: '40px',
-              height: '50px',
-              marginRight: '1px',
-              cursor: 'pointer' // Add this line
+              width: "40px",
+              height: "50px",
+              marginRight: "1px",
+              cursor: "pointer", // Add this line
             }}
           />
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -105,101 +109,79 @@ function ResponsiveAppBar() {
             >
               <MenuIcon />
             </IconButton>
-            <Menu
-              id="menu-appbar"
+            <Box
               anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
-              }}
+              sx={{ position: "absolute", top: 57, left: -15 }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              sx={{
-                display: { xs: 'block', md: 'none' },
-              }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+              {Boolean(anchorElNav) && (
+                <DropdownMain onClose={handleCloseNavMenu} />
+              )}
+            </Box>
           </Box>
-          <MovieOutlinedIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          <MovieOutlinedIcon
+            sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}
+          />
           <Typography
             variant="h5"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
-              display: { xs: 'flex', md: 'none' },
+              display: { xs: "flex", md: "none" },
               flexGrow: 1,
-              fontFamily: 'monospace',
+              fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
             }}
           >
             MM
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" }, pt: 2 }}>
+            <DropdownMain />
           </Box>
           {!user ? (
             <>
               <MenuItem onClick={redirectToLogin}>
-                <Typography textAlign="center" >Giriş Yap</Typography>
+                <Typography textAlign="center">Giriş Yap</Typography>
               </MenuItem>
               <MenuItem onClick={redirectToRegister}>
-                <Typography textAlign="center" >Kayıt Ol</Typography>
+                <Typography textAlign="center">Kayıt Ol</Typography>
               </MenuItem>
             </>
           ) : (
             <Box sx={{ flexGrow: 0 }}>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                  <Avatar alt="Remy Sharp" src={photoPath} />
+                  <Avatar alt="kullanıcı fotoğrafı" src={photoPath} />
                 </IconButton>
               </Tooltip>
               <Menu
-                sx={{ mt: '45px' }}
+                sx={{ mt: "45px" }}
                 id="menu-appbar"
                 anchorEl={anchorElUser}
                 anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                  vertical: "top",
+                  horizontal: "right",
                 }}
                 keepMounted
                 transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                  vertical: "top",
+                  horizontal: "right",
                 }}
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-
-                <MenuItem onClick={() => router.push('/profile')}>
+                <MenuItem onClick={() => router.push("/profile")}>
                   <Typography textAlign="center">Profile</Typography>
                 </MenuItem>
                 <MenuItem onClick={() => handleLogout()}>
                   <Typography textAlign="center">Çıkış Yap</Typography>
                 </MenuItem>
-
               </Menu>
             </Box>
           )}
@@ -208,4 +190,4 @@ function ResponsiveAppBar() {
     </AppBar>
   );
 }
-export default ResponsiveAppBar
+export default ResponsiveAppBar;

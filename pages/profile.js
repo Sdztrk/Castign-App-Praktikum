@@ -4,31 +4,33 @@ import {
   Typography,
   Drawer,
   IconButton,
+  Switch,
+  Tabs,
+  Tab,
+  Avatar,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import Cookies from "js-cookie";
-import API from "@/helpers/ApiBuilder";
-import AppContext from "@/AppContext";
-import Avatar from "@mui/material/Avatar";
-import { BackendMediaPath } from "@/constants/BackendValues";
-import Switch from "@mui/material/Switch";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import SettingsIcon from "@mui/icons-material/Settings";
+import {
+  Settings,
+  Close,
+  VideoCameraFront,
+  PhotoCamera,
+} from "@mui/icons-material";
 import GeneralInfoContent from "@/component/auth/profile/GeneralInfoContent ";
 import PhysicalFeaturesContent from "@/component/auth/profile/PhysicalFeaturesContent ";
 import ContactInformation from "@/component/auth/profile/ContactInformation ";
 import SocialMediaAccounts from "@/component/auth/profile/SocialMediaAccounts ";
 import EditProfileForm from "@/component/auth/profile/EditProfileForm";
-import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
-import VideoCameraFrontIcon from "@mui/icons-material/VideoCameraFront";
-import CloseIcon from "@mui/icons-material/Close";
 import { BASE_URL } from "@/constants/BackendValues";
 import { useIsMobile } from "@/constants/Main";
+import Cookies from "js-cookie";
+import API from "@/helpers/ApiBuilder";
+import AppContext from "@/AppContext";
+import { BackendMediaPath } from "@/constants/BackendValues";
 
 function Profile() {
   const router = useRouter();
-  const { userInfo } = useContext(AppContext);
+  const { userInfo, setUserInfo } = useContext(AppContext);
   const [isSwitchChecked, setIsSwitchChecked] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -36,8 +38,8 @@ function Profile() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const [artistProfile, setArtistProfile] = useState(null);
-
   const isMobile = useIsMobile(800);
+
   useEffect(() => {
     async function fetchArtistProfile() {
       if (userInfo.user === null) {
@@ -79,7 +81,7 @@ function Profile() {
         const profile = profileSource.data;
 
         setArtistProfile(profile);
-        setIsSwitchChecked(profile.is_active); // Update switch status
+        setIsSwitchChecked(profile.is_active);
       }
     }
     fetchArtistProfile();
@@ -112,12 +114,14 @@ function Profile() {
    * @param {Object} obj - The object to be processed.
    */
   const replaceNulls = (obj) => {
-    Object.keys(obj).forEach(key => {
-        if (obj[key] === null) {obj[key] = "";
-        } else if (typeof obj[key] === 'object' && obj[key] !== null) { replaceNulls(obj[key]);
-        }
+    Object.keys(obj).forEach((key) => {
+      if (obj[key] === null) {
+        obj[key] = "";
+      } else if (typeof obj[key] === "object" && obj[key] !== null) {
+        replaceNulls(obj[key]);
+      }
     });
-  }
+  };
   const handleSave = async (updatedProfile) => {
     replaceNulls(updatedProfile);
     delete updatedProfile["is_active"];
@@ -129,8 +133,8 @@ function Profile() {
     }
   };
 
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleCancel = () => {
+    setDrawerOpen(false);
   };
 
   const handleClose = () => {
@@ -184,6 +188,13 @@ function Profile() {
               setArtistProfile((prevState) => ({
                 ...prevState,
                 photo: data.photo,
+              }));
+              setUserInfo((prevUserInfo) => ({
+                ...prevUserInfo,
+                user: {
+                  ...prevUserInfo.user,
+                  photo: data.photo,
+                },
               }));
             } else {
               console.error(
@@ -258,7 +269,6 @@ function Profile() {
     try {
       const accessToken = Cookies.get("accessToken");
       if (accessToken) {
-        console.log({"is_active":newActiveStatus})
         let responseSource = await API.post("update_artist_profile", {"is_active":newActiveStatus}, accessToken);
         let response = responseSource.data;
         if (response?.error) {
@@ -266,14 +276,14 @@ function Profile() {
             "Aktif durumu güncellenirken hata oluştu:",
             response.status
           );
-          setIsSwitchChecked(artistProfile.is_active); // Hata durumunda, switch'i eski haline getir
+          setIsSwitchChecked(artistProfile.is_active);
         } else {
-          setIsSwitchChecked(response.is_active); // Switch durumunu güncelle
+          setIsSwitchChecked(response.is_active);
         }
       }
     } catch (error) {
       console.error("Aktif durumu güncelleme hatası:", error);
-      setIsSwitchChecked(artistProfile.is_active); // Hata durumunda, switch'i eski haline getir
+      setIsSwitchChecked(artistProfile.is_active);
     }
   };
 
@@ -324,7 +334,7 @@ function Profile() {
                 }}
                 sx={{ width: 50 }}
               >
-                <SettingsIcon />
+                <Settings />
               </IconButton>
             </Box>
           </Box>
@@ -373,7 +383,7 @@ function Profile() {
                     zIndex: 1,
                   }}
                 >
-                  <PhotoCameraIcon />
+                  <PhotoCamera />
                 </IconButton>
               </Box>
               <Box sx={{ textAlign: "center", marginTop: 2 }}>
@@ -426,7 +436,7 @@ function Profile() {
                   borderRadius: "50%",
                 }}
               >
-                <VideoCameraFrontIcon />
+                <VideoCameraFront />
               </IconButton>
             </Box>
           </Box>
@@ -470,7 +480,7 @@ function Profile() {
                 onClick={() => setDrawerOpen(false)}
                 sx={{ position: "absolute", left: 8, top: 8 }}
               >
-                <CloseIcon />
+                <Close />
               </IconButton>
               <Typography
                 sx={{ textAlign: "center", pt: 3 }}
@@ -482,6 +492,7 @@ function Profile() {
               <EditProfileForm
                 profile={editedProfileData}
                 onSave={handleSave}
+                onCancel={handleCancel}
               />
             </Box>
           </Drawer>
